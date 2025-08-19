@@ -39,19 +39,6 @@ const BrainCrumbs = () => {
             </div> */}
 
             {/* New Tab Card */}
-            <div
-              onClick={() => document.getElementById("my_modal_3").showModal()}
-              className="bg-gray-900 border border-gray-700 rounded-xl p-8 min-w-[150] hover:bg-gray-800 transition-colors cursor-pointer flex items-center justify-center"
-            >
-              <div className="text-center">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <span className="text-xl font-semibold text-gray-400">
-                    New Entry
-                  </span>
-                  <Plus size={20} className="text-gray-400" />
-                </div>
-              </div>
-            </div>
             <Modal />
           </div>
         </div>
