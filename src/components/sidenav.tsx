@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Save, Home, Bookmark, ChevronUp } from "lucide-react";
+import { Save, Home, Bookmark, ChevronUp, Plus } from "lucide-react";
 import collectionIcon from "../assets/collection.svg";
 import homeIcon from "../assets/homeicon.svg";
 
@@ -40,12 +40,21 @@ const Sidebar = () => {
           <div
             className={`${
               isCollectionOpen
-                ? "flex flex-col gap-2 text-white pl-10 py-1 "
+                ? "flex flex-col gap-2 text-white py-1 rounded-md "
                 : "hidden text-white"
             }`}
           >
-            <p>Item 1</p>
-            <p>Item 2</p>
+            <div className="cursor-pointer hover:bg-[#3F3F3F] py-1.5">
+              <p className="pl-10">Item 1</p>
+            </div>
+            <div className="cursor-pointer hover:bg-[#3F3F3F] py-1.5">
+              <p className="pl-10">Item 2</p>
+            </div>
+            <div className="cursor-pointer hover:bg-[#3F3F3F] hover:border rounded-lg text-gray-400 py-1">
+              <p className="pl-10 flex gap-2">
+                New <Plus />
+              </p>
+            </div>
           </div>
         </div>
       </nav>
