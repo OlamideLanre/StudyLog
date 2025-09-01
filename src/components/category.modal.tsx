@@ -1,0 +1,72 @@
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "./ui/input";
+import { useState } from "react";
+import { Button } from "./ui/button";
+import { supabase } from "@/supabaseClient";
+
+function CategoryModal() {
+  const [category, setCategory] = useState<string>();
+  const [error, setError] = useState<string>();
+
+  const createCategory = async () => {
+    try {
+      if (category?.trim() === "" || category?.trim() === undefined) {
+        setError("please enter a value");
+      } else {
+        const { data, error } = await supabase
+          .from("category")
+          .insert([{ category_name: category }])
+          .select();
+        console.log(data, error);
+        setCategory("");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <>
+      <Dialog>
+        <DialogTrigger>New</DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create New Category</DialogTitle>
+            <DialogDescription>
+              Create new category to save resources
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-3">
+            {/* <Label htmlFor="name-1">Category Name</Label> */}
+            <Input
+              id="category-1"
+              name="category"
+              placeholder="Enter category name e.g AI & ML"
+              value={category}
+              onChange={(e) => {
+                setCategory(e.target.value);
+              }}
+              required
+            />
+            {error ? <p className="text-red-500">{error}</p> : <p></p>}
+          </div>
+          <DialogFooter>
+            <Button type="submit" onClick={createCategory}>
+              create
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+
+export default CategoryModal;

@@ -1,11 +1,30 @@
-import { useState } from "react";
-import { Save, Home, Bookmark, ChevronUp, Plus } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ChevronUp, Plus } from "lucide-react";
 import collectionIcon from "../assets/collection.svg";
 import homeIcon from "../assets/homeicon.svg";
+import CategoryModal from "./category.modal";
+import { supabase } from "@/supabaseClient";
 
+interface category {
+  id: number;
+  name: string;
+}
 // Sidebar Component
 const Sidebar = () => {
   const [isCollectionOpen, setIsCollectionOpen] = useState(true);
+  const [localCategory, setCategory] = useState<category[]>([]);
+
+  useEffect(() => {
+    const fetchCategory = async () => {
+      let { data: category, error } = await supabase
+        .from("category")
+        .select("*");
+      setCategory(category);
+
+      console.log(category, error);
+    };
+    fetchCategory();
+  }, []);
 
   return (
     <div className="w-60 bg-[#282828] h-screen p-4 flex flex-col">
@@ -44,15 +63,17 @@ const Sidebar = () => {
                 : "hidden text-white"
             }`}
           >
-            <div className="cursor-pointer hover:bg-[#3F3F3F] py-1.5">
-              <p className="pl-10">Item 1</p>
-            </div>
-            <div className="cursor-pointer hover:bg-[#3F3F3F] py-1.5">
-              <p className="pl-10">Item 2</p>
-            </div>
+            {localCategory?.map((c) => (
+              <div
+                key={c.id}
+                className="cursor-pointer hover:bg-[#3F3F3F] py-1.5"
+              >
+                <p className="pl-10">{c.category_name}</p>
+              </div>
+            ))}
             <div className="cursor-pointer hover:bg-[#3F3F3F] hover:border rounded-lg text-gray-400 py-1">
               <p className="pl-10 flex gap-2">
-                New <Plus />
+                <CategoryModal /> <Plus />
               </p>
             </div>
           </div>

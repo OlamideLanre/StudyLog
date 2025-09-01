@@ -20,32 +20,28 @@ import {
   SelectValue,
 } from "./ui/select";
 import { useState } from "react";
+import { supabase } from "@/supabaseClient";
 
+// Test();
 const Modal = () => {
   const [title, setTitle] = useState<string>();
   const [link, setLink] = useState<string>();
   const [notes, setNotes] = useState<string>();
-  // const [category, setCategory] = useState();
-  let persistResource = [];
-  const handleSubmit = () => {
-    const Resources = {
-      ID: Date.now(),
-      Title: title,
-      Link: link,
-      Notes: notes,
-    };
-    persistResource.push(Resources);
-    setLink("");
-    setNotes("");
-    setTitle("");
-    console.log(persistResource);
+  // const [category, setCategory] = useState<string>();
+
+  const Test = async () => {
+    const { data, error } = await supabase
+      .from("resources")
+      .insert([{ title: title, link: link, notes: notes, category_id: 1 }])
+      .select();
+    console.log(data, error);
   };
   return (
     <>
       <Dialog>
         <form>
           <DialogTrigger asChild>
-            <div className="bg-gray-900 border border-gray-700 rounded-xl p-8 min-w-[150] hover:bg-gray-800 transition-colors cursor-pointer flex items-center justify-center">
+            <div className="border border-gray-700 rounded-xl p-8 min-w-[150] hover:bg-gray-900 transition-colors cursor-pointer flex items-center justify-center">
               <div className="text-center">
                 <div className="flex items-center justify-center gap-2 mb-2">
                   <span className="text-xl font-semibold text-gray-400">
@@ -116,7 +112,7 @@ const Modal = () => {
               {/* <DialogClose asChild>
                 <Button variant="outline">Cancel</Button>
               </DialogClose> */}
-              <Button type="submit" onClick={handleSubmit}>
+              <Button type="submit" onClick={Test}>
                 Save changes
               </Button>
             </DialogFooter>
