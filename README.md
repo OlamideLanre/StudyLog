@@ -22,5 +22,5 @@ A simple web app that helps you save and organize learning resources (articles, 
 
 - **React** (Frontend framework)
 - **Tailwind CSS** (Styling)
-- **JavaScript (ES6+)**
+- **Typescript**
 - **Shadcn ui**
