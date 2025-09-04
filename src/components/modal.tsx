@@ -19,23 +19,51 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/supabaseClient";
+import type { category } from "./sidenav";
 
 // Test();
 const Modal = () => {
   const [title, setTitle] = useState<string>();
   const [link, setLink] = useState<string>();
   const [notes, setNotes] = useState<string>();
-  // const [category, setCategory] = useState<string>();
+  const [localCategory, setCategory] = useState<category[]>([]);
+  const [choice, setChoice] = useState<string>();
 
-  const Test = async () => {
+  const insertResource = async () => {
     const { data, error } = await supabase
       .from("resources")
-      .insert([{ title: title, link: link, notes: notes, category_id: 1 }])
+      .insert([{ title: title, link: link, notes: notes, category_id: choice }])
       .select();
     console.log(data, error);
   };
+
+  useEffect(() => {
+    const fetchCategory = async () => {
+      let { data: category, error } = await supabase
+        .from("category")
+        .select("*");
+
+      if (error) {
+        console.error("Error fetching categories:", error.message);
+      } else {
+        setCategory(category ?? []);
+        console.log("Fetched categories:", category);
+      }
+    };
+
+    fetchCategory();
+  }, []);
+
+  // useEffect(() => {
+  //   console.log("Updated localCategory:", localCategory);
+  //   console.log(
+  //     "maping local category: ",
+  //     localCategory.map((c) => c.category_name)
+  //   );
+  // }, [localCategory]);
+
   return (
     <>
       <Dialog>
@@ -93,26 +121,28 @@ const Modal = () => {
                 />
               </div>
               <div>
-                <Select
-                // onValueChange={field.onChange}
-                // defaultValue={field.value}
+                <select
+                  value={choice}
+                  defaultValue="Select Category"
+                  className="select"
+                  onChange={(e) => {
+                    setChoice(e.target.value), console.log(choice);
+                  }}
                 >
-                  {/* <FormControl> */}
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select category" />
-                  </SelectTrigger>
-                  {/* </FormControl> */}
-                  <SelectContent>
-                    <SelectItem value="category1">category1</SelectItem>
-                  </SelectContent>
-                </Select>
+                  <option disabled={true}>Select Category</option>
+                  {localCategory.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.category_name}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
             <DialogFooter>
               {/* <DialogClose asChild>
                 <Button variant="outline">Cancel</Button>
               </DialogClose> */}
-              <Button type="submit" onClick={Test}>
+              <Button type="submit" onClick={insertResource}>
                 Save changes
               </Button>
             </DialogFooter>
