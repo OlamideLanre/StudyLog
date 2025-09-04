@@ -5,9 +5,9 @@ import homeIcon from "../assets/homeicon.svg";
 import CategoryModal from "./category.modal";
 import { supabase } from "@/supabaseClient";
 
-interface category {
+export interface category {
   id: number;
-  name: string;
+  category_name: string;
 }
 // Sidebar Component
 const Sidebar = () => {
@@ -19,9 +19,9 @@ const Sidebar = () => {
       let { data: category, error } = await supabase
         .from("category")
         .select("*");
-      setCategory(category);
+      setCategory(category ?? []);
 
-      console.log(category, error);
+      // console.log(category, error);
     };
     fetchCategory();
   }, []);
