@@ -4,6 +4,8 @@ import collectionIcon from "../assets/collection.svg";
 import homeIcon from "../assets/homeicon.svg";
 import CategoryModal from "./category.modal";
 import { supabase } from "@/supabaseClient";
+import { Link } from "react-router-dom";
+import { useCategoryContext, useResourcesContext } from "@/globalContext";
 
 export interface category {
   id: number;
@@ -11,21 +13,50 @@ export interface category {
 }
 // Sidebar Component
 const Sidebar = () => {
+  const [loading, setLoading] = useState<Boolean>();
   const [isCollectionOpen, setIsCollectionOpen] = useState(true);
   const [localCategory, setCategory] = useState<category[]>([]);
+  const { setSelectedCategory } = useCategoryContext();
+  const { selectedResource, setResources } = useResourcesContext();
 
   useEffect(() => {
     const fetchCategory = async () => {
-      let { data: category, error } = await supabase
-        .from("category")
-        .select("*");
-      setCategory(category ?? []);
-
-      // console.log(category, error);
+      try {
+        let { data: category, error } = await supabase
+          .from("category")
+          .select("*");
+        if (!error) {
+          setCategory(category ?? []);
+        } else {
+          console.log(error);
+        }
+      } catch (error) {
+        console.log("An error occured while fetching data");
+      }
     };
     fetchCategory();
   }, []);
 
+  async function fetchSelectedResource(category_id: number) {
+    try {
+      setLoading(true);
+      let { data: resources, error } = await supabase
+        .from("resources")
+        .select("*")
+        .eq("category_id", category_id);
+
+      if (!error) {
+        setLoading(false);
+        setResources(resources ?? []);
+        console.log(selectedResource);
+      } else {
+        console.log(error);
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  }
   return (
     <div className="w-60 bg-[#282828] h-screen p-4 flex flex-col">
       <h1 className="mt-10 font-bold text-xl py-1 ">BrainCrumbs</h1>
@@ -36,7 +67,9 @@ const Sidebar = () => {
         {/* Resources */}
         <button className="flex items-center gap-3 text-orange-400 py-2 px-2">
           <img src={homeIcon} alt="Collection Icon" />
-          <span className="text-lg">Resources</span>
+          <Link to="/" className="text-lg">
+            Resources
+          </Link>
         </button>
 
         {/* Collection */}
@@ -68,7 +101,15 @@ const Sidebar = () => {
                 key={c.id}
                 className="cursor-pointer hover:bg-[#3F3F3F] py-1.5"
               >
-                <p className="pl-10">{c.category_name}</p>
+                <p
+                  className="pl-10"
+                  onClick={() => {
+                    setSelectedCategory(c.category_name);
+                    fetchSelectedResource(c.id);
+                  }}
+                >
+                  {c.category_name}
+                </p>
               </div>
             ))}
             <div className="cursor-pointer hover:bg-[#3F3F3F] hover:border rounded-lg text-gray-400 py-1">
