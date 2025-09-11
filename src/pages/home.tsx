@@ -1,13 +1,9 @@
-import { Plus, Sun } from "lucide-react";
-import Sidebar from "../components/sidenav";
+import { Sun } from "lucide-react";
 import Modal from "../components/modal";
 
 const BrainCrumbs = () => {
   return (
     <div className="flex h-screen bg-black text-white">
-      {/* Sidebar */}
-      <Sidebar />
-
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Header with theme toggle */}
