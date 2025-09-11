@@ -3,7 +3,6 @@ import "./App.css";
 import BrainCrumbs from "./pages/home";
 import DisplayResources from "./pages/resources";
 import Sidebar from "./components/sidenav";
-import School from "./pages/school";
 import ErrorBoundary from "./errorboundary";
 
 function App() {
