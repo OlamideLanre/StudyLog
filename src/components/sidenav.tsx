@@ -4,7 +4,7 @@ import collectionIcon from "../assets/collection.svg";
 import homeIcon from "../assets/homeicon.svg";
 import CategoryModal from "./category.modal";
 import { supabase } from "@/supabaseClient";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCategoryContext, useResourcesContext } from "@/globalContext";
 
 export interface category {
@@ -12,12 +12,14 @@ export interface category {
   category_name: string;
 }
 // Sidebar Component
+
 const Sidebar = () => {
   const [loading, setLoading] = useState<Boolean>();
   const [isCollectionOpen, setIsCollectionOpen] = useState(true);
-  const [localCategory, setCategory] = useState<category[]>([]);
+  const [allCategory, setCategory] = useState<category[]>([]);
   const { setSelectedCategory } = useCategoryContext();
   const { selectedResource, setResources } = useResourcesContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategory = async () => {
@@ -31,13 +33,16 @@ const Sidebar = () => {
           console.log(error);
         }
       } catch (error) {
-        console.log("An error occured while fetching data");
+        console.log("An error occured while fetching category data");
       }
     };
     fetchCategory();
   }, []);
 
-  async function fetchSelectedResource(category_id: number) {
+  async function fetchSelectedResource(
+    category_id: number,
+    category_name: string
+  ) {
     try {
       setLoading(true);
       let { data: resources, error } = await supabase
@@ -46,9 +51,10 @@ const Sidebar = () => {
         .eq("category_id", category_id);
 
       if (!error) {
+        navigate(`/resources/${category_name}`);
         setLoading(false);
         setResources(resources ?? []);
-        console.log(selectedResource);
+        // console.log(selectedResource);
       } else {
         console.log(error);
       }
@@ -57,6 +63,7 @@ const Sidebar = () => {
       console.log(error);
     }
   }
+
   return (
     <div className="w-60 bg-[#282828] h-screen p-4 flex flex-col">
       <h1 className="mt-10 font-bold text-xl py-1 ">BrainCrumbs</h1>
@@ -96,7 +103,7 @@ const Sidebar = () => {
                 : "hidden text-white"
             }`}
           >
-            {localCategory?.map((c) => (
+            {allCategory?.map((c) => (
               <div
                 key={c.id}
                 className="cursor-pointer hover:bg-[#3F3F3F] py-1.5"
@@ -105,7 +112,7 @@ const Sidebar = () => {
                   className="pl-10"
                   onClick={() => {
                     setSelectedCategory(c.category_name);
-                    fetchSelectedResource(c.id);
+                    fetchSelectedResource(c.id, c.category_name);
                   }}
                 >
                   {c.category_name}

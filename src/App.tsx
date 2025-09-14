@@ -19,8 +19,10 @@ function App() {
           <ErrorBoundary>
             <Routes>
               <Route path="/" element={<BrainCrumbs />} />
-              <Route path="/resources" element={<DisplayResources />} />
-              <Route path="/school" element={<School />} />
+              <Route
+                path="/resources/:category"
+                element={<DisplayResources />}
+              />
             </Routes>
           </ErrorBoundary>
         </div>

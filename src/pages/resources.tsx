@@ -1,7 +1,9 @@
 import { useCategoryContext, useResourcesContext } from "@/globalContext";
 import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
 
 function DisplayResources() {
+  // const { category } = useParams(); // 👈 from URL
   const [loading, setLoading] = useState<Boolean>(false);
   const { selectedCategory } = useCategoryContext();
   const { selectedResource } = useResourcesContext();
@@ -21,13 +23,13 @@ function DisplayResources() {
               }}
             >
               <h1 className="font-semibold text-lg">{r.title}</h1>
-              <a
-                href={r.link}
+              <Link
+                to={r.link}
                 target="_blank"
                 className="text-sm hover:text-orange-500"
               >
                 {r.link}
-              </a>
+              </Link>
               <p className="font-light mt-2">
                 {r.notes ? r.notes : "no notes"}
               </p>

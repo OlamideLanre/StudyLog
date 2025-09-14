@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useState } from "react";
 
 // Define the type for the context value
-interface SelectedCategoryType {
+type SelectedCategoryType = {
   selectedCategory: string;
   setSelectedCategory: (selectedCategory: string) => {};
-}
+};
 // Create the context with a default value
 const CategoryContext = createContext<SelectedCategoryType | undefined>(
   undefined
@@ -35,17 +35,17 @@ export const useCategoryContext = (): SelectedCategoryType => {
 //   notes: string;
 // };
 
-interface ResourceType {
+type ResourceType = {
   id: number;
   title: string;
   link: string;
   notes: string;
   selectedResource: [];
   setResources: (selectedResource: []) => {};
-}
+};
 const ResourcesContext = createContext<ResourceType | undefined>(undefined);
 export const ResourceProvider = ({ children }) => {
-  const [selectedResource, setResources] = useState<Resource[]>();
+  const [selectedResource, setResources] = useState<[]>();
   return (
     <ResourcesContext.Provider value={{ selectedResource, setResources }}>
       {children}
@@ -56,7 +56,7 @@ export const ResourceProvider = ({ children }) => {
 export const useResourcesContext = (): ResourceType => {
   const context = useContext(ResourcesContext);
   if (!context) {
-    throw new Error("useAppContext must be used within an AppProvider");
+    throw new Error("useResourcesContext must be used within an AppProvider");
   }
   return context;
 };
