@@ -37,6 +37,9 @@ const Modal = () => {
       .insert([{ title: title, link: link, notes: notes, category_id: choice }])
       .select();
     console.log(data, error);
+    setTitle("");
+    setLink("");
+    setNotes("");
   };
 
   useEffect(() => {
