@@ -18,7 +18,7 @@ const Sidebar = () => {
   const [isCollectionOpen, setIsCollectionOpen] = useState(true);
   const [allCategory, setCategory] = useState<category[]>([]);
   const { setSelectedCategory } = useCategoryContext();
-  const { selectedResource, setResources } = useResourcesContext();
+  const { setResources } = useResourcesContext();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -111,7 +111,7 @@ const Sidebar = () => {
                 <p
                   className="pl-10"
                   onClick={() => {
-                    setSelectedCategory(c.category_name);
+                    setSelectedCategory(c.id);
                     fetchSelectedResource(c.id, c.category_name);
                   }}
                 >

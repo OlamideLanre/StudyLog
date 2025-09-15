@@ -1,18 +1,42 @@
 import { useCategoryContext, useResourcesContext } from "@/globalContext";
-import { useState } from "react";
+import { supabase } from "@/supabaseClient";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 function DisplayResources() {
-  // const { category } = useParams(); // 👈 from URL
   const [loading, setLoading] = useState<Boolean>(false);
+  const { category } = useParams();
+  const { selectedResource, setResources } = useResourcesContext();
   const { selectedCategory } = useCategoryContext();
-  const { selectedResource } = useResourcesContext();
+
+  useEffect(() => {
+    if (!category) return;
+
+    const fetchResources = async () => {
+      setLoading(true);
+      let { data, error } = await supabase
+        .from("resources")
+        .select("*")
+        .eq("category_id", selectedCategory); // or .eq("category_id", +categoryId)
+      console.log("category ID", selectedCategory);
+
+      if (!error) setResources(data ?? []);
+      setLoading(false);
+    };
+
+    fetchResources();
+  }, [category]);
 
   return (
     <>
-      <div className="bg-black h-screen flex flex-col gap-2 items-center">
-        {loading ? (
-          <p>Loading..</p>
+      <div className="bg-black h-screen flex flex-col gap-2 p-10">
+        <h1 className="text-white text-3xl font-semibold my-3">{category}</h1>
+        {!selectedResource ? (
+          <div className="h-screen flex justify-center items-center ">
+            <h1 className="font-semibold text-xl text-white">
+              Resource not found
+            </h1>
+          </div>
         ) : (
           selectedResource?.map((r) => (
             <div

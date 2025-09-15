@@ -1,9 +1,8 @@
 import React, { createContext, useContext, useState } from "react";
-
 // Define the type for the context value
 type SelectedCategoryType = {
   selectedCategory: string;
-  setSelectedCategory: (selectedCategory: string) => {};
+  setSelectedCategory: (selectedCategory: number) => {};
 };
 // Create the context with a default value
 const CategoryContext = createContext<SelectedCategoryType | undefined>(
@@ -43,7 +42,9 @@ type ResourceType = {
   selectedResource: [];
   setResources: (selectedResource: []) => {};
 };
+// Create the context with a default value
 const ResourcesContext = createContext<ResourceType | undefined>(undefined);
+
 export const ResourceProvider = ({ children }) => {
   const [selectedResource, setResources] = useState<[]>();
   return (
