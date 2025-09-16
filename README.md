@@ -13,7 +13,6 @@ A simple web app that helps you save and organize learning resources (articles, 
 - Search resources by keyword
 - Filter resources by category
 - Edit or delete saved resources
-- Data persistence using **localStorage** (so resources don’t disappear on refresh)
 
 ---
 ---
