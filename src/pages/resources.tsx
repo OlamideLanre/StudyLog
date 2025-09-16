@@ -9,23 +9,20 @@ function DisplayResources() {
   const { selectedResource, setResources } = useResourcesContext();
   const { selectedCategory } = useCategoryContext();
 
-  useEffect(() => {
-    if (!category) return;
-
-    const fetchResources = async () => {
-      setLoading(true);
-      let { data, error } = await supabase
-        .from("resources")
-        .select("*")
-        .eq("category_id", selectedCategory); // or .eq("category_id", +categoryId)
-      console.log("category ID", selectedCategory);
-
-      if (!error) setResources(data ?? []);
-      setLoading(false);
-    };
-
-    fetchResources();
-  }, [category]);
+  const deleteResource = async (resourceID: number) => {
+    const { error } = await supabase
+      .from("resources")
+      .delete()
+      .eq("id", resourceID);
+    // error ? console.log(error) : console.log("resource deleted");
+    if (!error) {
+      const removeResource = selectedResource.filter(
+        (resource) => resource.id !== resourceID
+      );
+      setResources(removeResource);
+      console.log("deleted resource", selectedResource);
+    }
+  };
 
   return (
     <>
@@ -46,7 +43,19 @@ function DisplayResources() {
                 console.log("category context: ", selectedCategory);
               }}
             >
-              <h1 className="font-semibold text-lg">{r.title}</h1>
+              <div className="flex justify-between">
+                <h1 className="font-semibold text-lg">{r.title}</h1>
+                <button
+                  onClick={() => {
+                    deleteResource(r.id);
+                  }}
+                  className="cursor-pointer text-red-500"
+                  title="delete's a resource"
+                >
+                  delete
+                </button>
+              </div>
+
               <Link
                 to={r.link}
                 target="_blank"
