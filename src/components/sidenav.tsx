@@ -17,7 +17,7 @@ const Sidebar = () => {
   const [loading, setLoading] = useState<Boolean>();
   const [isCollectionOpen, setIsCollectionOpen] = useState(true);
   const [allCategory, setCategory] = useState<category[]>([]);
-  const { setSelectedCategory } = useCategoryContext();
+  const { selectedCategory, setSelectedCategory } = useCategoryContext();
   const { setResources } = useResourcesContext();
   const navigate = useNavigate();
 
@@ -81,21 +81,27 @@ const Sidebar = () => {
 
         {/* Collection */}
         <div className="">
-          <button
-            onClick={() => setIsCollectionOpen(!isCollectionOpen)}
-            className="flex items-center justify-between w-full text-white py-2 px-2 hover:bg-gray-700 rounded transition-colors"
-          >
-            <div className="flex items-center gap-3">
-              <img src={collectionIcon} alt="Collection Icon" />
-              <span className="text-lg">Collection</span>
-            </div>
-            <ChevronUp
-              size={16}
-              className={`transform transition-transform ${
-                isCollectionOpen ? "" : "rotate-180"
-              }`}
-            />
-          </button>
+          <div className="flex items-center">
+            <button
+              onClick={() => setIsCollectionOpen(!isCollectionOpen)}
+              className="flex items-center justify-between w-full text-white py-2 px-2 hover:bg-gray-700 rounded transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <img src={collectionIcon} alt="Collection Icon" />
+                <span className="text-lg">Collection</span>
+              </div>
+
+              <ChevronUp
+                size={16}
+                className={`transform transition-transform ${
+                  isCollectionOpen ? "" : "rotate-180"
+                }`}
+              />
+            </button>
+            {/* modal to create new category */}
+
+            <CategoryModal />
+          </div>
           <div
             className={`${
               isCollectionOpen
@@ -106,7 +112,11 @@ const Sidebar = () => {
             {allCategory?.map((c) => (
               <div
                 key={c.id}
-                className="cursor-pointer hover:bg-[#3F3F3F] py-1.5"
+                className={
+                  selectedCategory === c.id
+                    ? "bg-[#3F3F3F] py-1.5"
+                    : `cursor-pointer hover:bg-[#3F3F3F] py-1.5`
+                }
               >
                 <p
                   className="pl-10"
@@ -119,11 +129,6 @@ const Sidebar = () => {
                 </p>
               </div>
             ))}
-            <div className="cursor-pointer hover:bg-[#3F3F3F] hover:border rounded-lg text-gray-400 py-1">
-              <p className="pl-10 flex gap-2">
-                <CategoryModal /> <Plus />
-              </p>
-            </div>
           </div>
         </div>
       </nav>

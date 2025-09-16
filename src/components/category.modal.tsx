@@ -11,6 +11,7 @@ import { Input } from "./ui/input";
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { supabase } from "@/supabaseClient";
+import { Plus } from "lucide-react";
 
 function CategoryModal() {
   const [category, setCategory] = useState<string>();
@@ -36,7 +37,9 @@ function CategoryModal() {
   return (
     <>
       <Dialog>
-        <DialogTrigger>New</DialogTrigger>
+        <DialogTrigger>
+          <Plus size={18} className="hover:bg-[#3F3F3F] rounded" />
+        </DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Create New Category</DialogTitle>

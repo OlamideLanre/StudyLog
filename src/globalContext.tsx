@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 // Define the type for the context value
 type SelectedCategoryType = {
-  selectedCategory: string;
+  selectedCategory: number;
   setSelectedCategory: (selectedCategory: number) => {};
 };
 // Create the context with a default value
