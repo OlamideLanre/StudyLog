@@ -146,7 +146,7 @@ const Modal = () => {
                 <Button variant="outline">Cancel</Button>
               </DialogClose> */}
               <Button type="submit" onClick={insertResource}>
-                Save changes
+                Add Resource
               </Button>
             </DialogFooter>
           </DialogContent>

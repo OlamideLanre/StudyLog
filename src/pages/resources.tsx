@@ -1,5 +1,7 @@
+import EditModal from "@/components/edit.modal";
 import { useCategoryContext, useResourcesContext } from "@/globalContext";
 import { supabase } from "@/supabaseClient";
+import { Delete, Edit } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
@@ -69,13 +71,16 @@ function DisplayResources() {
           >
             <div className="flex justify-between">
               <h1 className="font-semibold text-lg">{r.title}</h1>
-              <button
-                onClick={() => deleteResource(r.id)}
-                className="cursor-pointer text-red-500"
-                title="delete a resource"
-              >
-                delete
-              </button>
+              <div className="flex gap-3 items-center">
+                <EditModal resourceID={r.id} />
+                <Delete
+                  color="red"
+                  onClick={() => {
+                    deleteResource(r.id);
+                  }}
+                  className="cursor-pointer"
+                />
+              </div>
             </div>
 
             <Link
