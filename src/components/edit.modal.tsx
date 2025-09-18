@@ -10,19 +10,19 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { DatabaseZapIcon, Edit } from "lucide-react";
+import { Edit } from "lucide-react";
 import { Textarea } from "./ui/textarea";
 import { useEffect, useState } from "react";
 import { supabase } from "@/supabaseClient";
 import type { category } from "./sidenav";
 
-const EditModal = ({ resourceID }) => {
+const EditModal = ({ resourceID, onUpdated }) => {
   const [title, setTitle] = useState<string>();
   const [link, setLink] = useState<string>();
   const [notes, setNotes] = useState<string>();
-  const [localCategory, setCategory] = useState<category[]>([]);
+  const [allCategory, setCategory] = useState<category[]>([]);
   const [fetchedResource, setFetchedResource] = useState([]);
-  const [choice, setChoice] = useState<string>();
+  const [choice, setChoice] = useState<number>();
 
   async function fetcResource(resourceID: number) {
     try {
@@ -30,15 +30,57 @@ const EditModal = ({ resourceID }) => {
         .from("resources")
         .select("*")
         .eq("id", resourceID);
+
       if (!error) {
         setFetchedResource(data);
-        console.log("useState resource: ", fetchedResource);
+      } else {
+        console.log("an error occured: ", error);
       }
-      //   console.log(data);
     } catch (error) {
       console.log(error);
     }
   }
+  // UPDATE RESOURCE
+  async function updateResource(resourceID: number) {
+    const { data, error } = await supabase
+      .from("resources")
+      .update({ title: title, link: link, notes: notes, category_id: choice })
+      .eq("id", resourceID)
+      .select();
+    if (!error) {
+      setTitle("");
+      setLink("");
+      setNotes("");
+      setChoice(0);
+      console.log(data);
+    } else {
+      console.log("error occured while updating: ", error);
+    }
+    if (onUpdated) {
+      onUpdated();
+    }
+  }
+  // fetching all categories
+  useEffect(() => {
+    async function fetchResourceCategory() {
+      let { data, error } = await supabase.from("category").select("*");
+      if (!error) {
+        setCategory(data);
+      }
+    }
+    fetchResourceCategory();
+  }, []);
+
+  //SETTING THE DATA TO THEIR INPUT FILED
+  useEffect(() => {
+    if (fetchedResource && fetchedResource.length > 0) {
+      const r = fetchedResource[0];
+      setTitle(r.title);
+      setLink(r.link);
+      setNotes(r.notes);
+      setChoice(r.category_id);
+    }
+  }, [fetchedResource]);
 
   return (
     <>
@@ -49,9 +91,6 @@ const EditModal = ({ resourceID }) => {
               size={18}
               className="cursor-pointer"
               onClick={() => {
-                // navigate("/edit");
-                console.log("edit button clicked");
-                console.log("resource ID: ", resourceID);
                 fetcResource(resourceID);
               }}
             />
@@ -72,7 +111,7 @@ const EditModal = ({ resourceID }) => {
                     id="name-1"
                     name="name"
                     placeholder="Array Reduce Function"
-                    value={r.title}
+                    value={title}
                     onChange={(e) => {
                       setTitle(e.target.value);
                     }}
@@ -84,14 +123,14 @@ const EditModal = ({ resourceID }) => {
                     id="link-1"
                     name="link"
                     placeholder="www.yourlink.com"
-                    value={r.link}
+                    value={link}
                     onChange={(e) => {
                       setLink(e.target.value);
                     }}
                   />
                   <Textarea
                     placeholder="short description of your resource"
-                    value={r.notes || "no notes added"}
+                    value={notes || "no notes added"}
                     onChange={(e) => {
                       setNotes(e.target.value);
                     }}
@@ -107,7 +146,7 @@ const EditModal = ({ resourceID }) => {
                     }}
                   >
                     <option disabled={true}>Select Category</option>
-                    {localCategory.map((c) => (
+                    {allCategory.map((c) => (
                       <option key={c.id} value={c.id}>
                         {c.category_name}
                       </option>
@@ -124,6 +163,7 @@ const EditModal = ({ resourceID }) => {
                 type="submit"
                 onClick={() => {
                   console.log("save button clicked");
+                  updateResource(resourceID);
                 }}
               >
                 Save changes

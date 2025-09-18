@@ -51,7 +51,7 @@ const Sidebar = () => {
         .eq("category_id", category_id);
 
       if (!error) {
-        navigate(`/resources/${category_name}`);
+        navigate(`/resources/${category_id}/${category_name}`);
         setLoading(false);
         setResources(resources ?? []);
         // console.log(selectedResource);

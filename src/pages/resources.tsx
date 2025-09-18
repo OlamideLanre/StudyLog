@@ -1,5 +1,5 @@
 import EditModal from "@/components/edit.modal";
-import { useCategoryContext, useResourcesContext } from "@/globalContext";
+import { useResourcesContext } from "@/globalContext";
 import { supabase } from "@/supabaseClient";
 import { Delete, Edit } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -8,13 +8,13 @@ import { Link, useParams } from "react-router-dom";
 function DisplayResources() {
   const [loading, setLoading] = useState<Boolean>(false);
   const [searchVal, setSearchVal] = useState("");
-  const { category } = useParams();
+  const { id, category } = useParams();
   const { selectedResource, setResources } = useResourcesContext();
-  // const { selectedCategory } = useCategoryContext();
 
   // local copy for search
   const [filteredResources, setFilteredResources] = useState(selectedResource);
 
+  //DELETE'S A RESOURCE
   const deleteResource = async (resourceID: number) => {
     const { error } = await supabase
       .from("resources")
@@ -37,7 +37,6 @@ function DisplayResources() {
       setFilteredResources(selectedResource);
       return;
     }
-
     const filterBySearch = selectedResource.filter(
       (item) =>
         item.title.toLowerCase().includes(searchVal.toLowerCase()) ||
@@ -46,6 +45,19 @@ function DisplayResources() {
 
     setFilteredResources(filterBySearch);
   }, [searchVal, selectedResource]);
+
+  //REFETCH AFTER UPDATE
+  async function fetchResources() {
+    if (!category) return;
+    let { data, error } = await supabase
+      .from("resources")
+      .select("*")
+      .eq("category_id", id);
+
+    if (!error) {
+      setResources(data ?? []);
+    }
+  }
 
   return (
     <div className="bg-black h-screen flex flex-col gap-2 p-10">
@@ -72,7 +84,7 @@ function DisplayResources() {
             <div className="flex justify-between">
               <h1 className="font-semibold text-lg">{r.title}</h1>
               <div className="flex gap-3 items-center">
-                <EditModal resourceID={r.id} />
+                <EditModal resourceID={r.id} onUpdated={fetchResources} />
                 <Delete
                   color="red"
                   onClick={() => {

@@ -4,6 +4,7 @@ import BrainCrumbs from "./pages/home";
 import DisplayResources from "./pages/resources";
 import Sidebar from "./components/sidenav";
 import ErrorBoundary from "./errorboundary";
+import EditResource from "./pages/edit";
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
             <Routes>
               <Route path="/" element={<BrainCrumbs />} />
               <Route
-                path="/resources/:category"
+                path="/resources/:id/:category"
                 element={<DisplayResources />}
               />
             </Routes>
