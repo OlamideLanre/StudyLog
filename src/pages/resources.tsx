@@ -1,3 +1,4 @@
+import DeleteModal from "@/components/delete.modal";
 import EditModal from "@/components/edit.modal";
 import { useResourcesContext } from "@/globalContext";
 import { supabase } from "@/supabaseClient";
@@ -67,7 +68,7 @@ function DisplayResources() {
         placeholder="search a resource"
         value={searchVal}
         onChange={(e) => setSearchVal(e.target.value)}
-        className="placeholder:text-gray-400 py-2 pl-2 w-1/3 border border-white rounded-md text-white outline-none"
+        className="placeholder:text-gray-400 py-2 pl-2 w-1/3 md:w-1/2 border border-white rounded-md text-white outline-none"
       />
       {filteredResources?.length === 0 ? (
         <div className="flex justify-center items-center h-full">
@@ -79,18 +80,16 @@ function DisplayResources() {
         filteredResources?.map((r) => (
           <div
             key={r.id}
-            className="bg-[#282828] text-white w-[60%] p-4 rounded-md"
+            className="bg-[#282828] text-white w-[100%] xl:w-[60%] p-4 rounded-md"
           >
             <div className="flex justify-between">
               <h1 className="font-semibold text-lg">{r.title}</h1>
               <div className="flex gap-3 items-center">
                 <EditModal resourceID={r.id} onUpdated={fetchResources} />
-                <Delete
-                  color="red"
-                  onClick={() => {
+                <DeleteModal
+                  deleteResource={() => {
                     deleteResource(r.id);
                   }}
-                  className="cursor-pointer"
                 />
               </div>
             </div>

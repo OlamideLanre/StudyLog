@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,7 +8,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Delete } from "lucide-react";
-import { DialogClose } from "@radix-ui/react-dialog";
 import { Button } from "./ui/button";
 
 function DeleteModal({ deleteResource }) {
