@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { ChevronUp, Plus } from "lucide-react";
+import { ChevronUp, Plus, Sun } from "lucide-react";
 import collectionIcon from "../assets/collection.svg";
 import homeIcon from "../assets/homeicon.svg";
 import CategoryModal from "./modal/category.modal";
 import { supabase } from "@/supabaseClient";
 import { Link, useNavigate } from "react-router-dom";
 import { useCategoryContext, useResourcesContext } from "@/globalContext";
+import { useTheme } from "@/ThemeToggle";
 
 export interface category {
   id: number;
@@ -14,6 +15,7 @@ export interface category {
 // Sidebar Component
 
 const Sidebar = () => {
+  const { theme, setTheme } = useTheme();
   const [loading, setLoading] = useState<Boolean>();
   const [isCollectionOpen, setIsCollectionOpen] = useState(true);
   const [allCategory, setCategory] = useState<category[]>([]);
@@ -66,7 +68,18 @@ const Sidebar = () => {
 
   return (
     <div className="w-60 bg-[#282828] h-screen p-4 flex flex-col dark:bg-white dark:border dark:border-gray-400 dark:text-black">
-      <h1 className="mt-10 font-bold text-xl py-1 ">BrainCrumbs</h1>
+      <div className="flex justify-between items-end">
+        <h1 className="mt-10 font-bold text-xl py-1 ">BrainCrumbs</h1>
+        <button
+          onClick={() => {
+            setTheme(theme === "dark" ? "light" : "dark");
+          }}
+          className="text-white hover:text-gray-300 transition-colors pb-1"
+        >
+          <Sun size={24} className="dark:text-black" />
+        </button>
+      </div>
+
       <hr className="text-white" />
 
       {/* Navigation Items */}
