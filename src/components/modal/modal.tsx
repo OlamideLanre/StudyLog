@@ -65,7 +65,7 @@ const Modal = () => {
       <Dialog>
         <form>
           <DialogTrigger asChild>
-            <div className="border border-gray-700 rounded-xl p-8 min-w-[150] hover:bg-gray-900 transition-colors cursor-pointer flex items-center justify-center">
+            <div className="border border-gray-700 rounded-xl p-8 min-w-[150] hover:bg-gray-900 dark:hover:bg-slate-200 transition-colors cursor-pointer flex items-center justify-center">
               <div className="text-center">
                 <div className="flex items-center justify-center gap-2 mb-2">
                   <span className="text-xl font-semibold text-gray-400">
@@ -76,7 +76,7 @@ const Modal = () => {
               </div>
             </div>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px] bg-black text-white">
+          <DialogContent className="sm:max-w-[425px] bg-black text-white dark:bg-white dark:text-black">
             <DialogHeader>
               <DialogTitle>Add New Resource</DialogTitle>
               <DialogDescription className="text-gray-400">
@@ -95,6 +95,7 @@ const Modal = () => {
                   onChange={(e) => {
                     setTitle(e.target.value);
                   }}
+                  className="dark:border dark:border-gray-500"
                 />
               </div>
               <div className="grid gap-3">
@@ -107,6 +108,7 @@ const Modal = () => {
                   onChange={(e) => {
                     setLink(e.target.value);
                   }}
+                  className="dark:border dark:border-gray-500"
                 />
                 <Textarea
                   placeholder="short description of your resource"
@@ -114,13 +116,14 @@ const Modal = () => {
                   onChange={(e) => {
                     setNotes(e.target.value);
                   }}
+                  className="dark:border dark:border-gray-500"
                 />
               </div>
               <div>
                 <select
                   value={choice}
                   defaultValue="Select Category"
-                  className="select"
+                  className="select dark:bg-slate-200"
                   onChange={(e) => {
                     setChoice(e.target.value), console.log(choice);
                   }}
