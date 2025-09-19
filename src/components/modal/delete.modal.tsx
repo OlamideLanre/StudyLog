@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Delete } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
 function DeleteModal({ deleteResource }) {
   return (
@@ -22,7 +22,7 @@ function DeleteModal({ deleteResource }) {
           className="cursor-pointer"
         />
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="text-white bg-black dark:bg-white dark:text-black">
         <DialogHeader>
           <DialogTitle>Are you absolutely sure?</DialogTitle>
           <DialogDescription>

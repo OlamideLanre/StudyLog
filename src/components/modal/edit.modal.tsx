@@ -11,10 +11,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Edit } from "lucide-react";
-import { Textarea } from "./ui/textarea";
+import { Textarea } from "../ui/textarea";
 import { useEffect, useState } from "react";
 import { supabase } from "@/supabaseClient";
-import type { category } from "./sidenav";
+import type { category } from "../sidenav";
 
 const EditModal = ({ resourceID, onUpdated }) => {
   const [title, setTitle] = useState<string>();
@@ -95,7 +95,7 @@ const EditModal = ({ resourceID, onUpdated }) => {
               }}
             />
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px] bg-black text-white">
+          <DialogContent className="sm:max-w-[425px] bg-black text-white dark:bg-slate-100 dark:text-black">
             <DialogHeader>
               <DialogTitle>Edit Resource</DialogTitle>
               <DialogDescription className="text-gray-400">
@@ -115,6 +115,7 @@ const EditModal = ({ resourceID, onUpdated }) => {
                     onChange={(e) => {
                       setTitle(e.target.value);
                     }}
+                    className="dark:border dark:border-gray-500"
                   />
                 </div>
                 <div className="grid gap-3">
@@ -127,6 +128,7 @@ const EditModal = ({ resourceID, onUpdated }) => {
                     onChange={(e) => {
                       setLink(e.target.value);
                     }}
+                    className="dark:border dark:border-gray-500"
                   />
                   <Textarea
                     placeholder="short description of your resource"
@@ -134,13 +136,14 @@ const EditModal = ({ resourceID, onUpdated }) => {
                     onChange={(e) => {
                       setNotes(e.target.value);
                     }}
+                    className="dark:border dark:border-gray-500"
                   />
                 </div>
                 <div>
                   <select
                     value={choice}
                     defaultValue="Select Category"
-                    className="select"
+                    className="select dark:bg-slate-200"
                     onChange={(e) => {
                       setChoice(e.target.value), console.log(choice);
                     }}
@@ -162,9 +165,9 @@ const EditModal = ({ resourceID, onUpdated }) => {
               <Button
                 type="submit"
                 onClick={() => {
-                  console.log("save button clicked");
                   updateResource(resourceID);
                 }}
+                // className="dark:bg-orange-500"
               >
                 Save changes
               </Button>

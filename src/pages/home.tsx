@@ -1,21 +1,30 @@
 import { Sun } from "lucide-react";
-import Modal from "../components/modal";
+import Modal from "../components/modal/modal";
+import { useTheme } from "@/ThemeToggle";
 
 const BrainCrumbs = () => {
+  const { theme, setTheme } = useTheme();
   return (
-    <div className="flex h-screen bg-black text-white">
+    <div className="flex h-screen bg-black text-white dark:bg-slate-100 dark:text-black">
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Header with theme toggle */}
         <div className="flex justify-end p-6">
-          <button className="text-white hover:text-gray-300 transition-colors">
-            <Sun size={24} />
+          <button
+            onClick={() => {
+              setTheme(theme === "dark" ? "light" : "dark");
+            }}
+            className="text-white hover:text-gray-300 transition-colors"
+          >
+            <Sun size={24} className="dark:text-black" />
           </button>
         </div>
 
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col items-center justify-center px-8">
-          <h1 className="text-5xl font-bold mb-4">BrainCrumbs</h1>
+          <h1 className="text-5xl font-bold mb-4 dark:text-orange-500">
+            BrainCrumbs
+          </h1>
           <p className="text-gray-400 text-xl mb-12">
             What are you saving today?
           </p>

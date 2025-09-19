@@ -1,5 +1,5 @@
-import DeleteModal from "@/components/delete.modal";
-import EditModal from "@/components/edit.modal";
+import DeleteModal from "@/components/modal/delete.modal";
+import EditModal from "@/components/modal/edit.modal";
 import { useResourcesContext } from "@/globalContext";
 import { supabase } from "@/supabaseClient";
 import { Delete, Edit } from "lucide-react";
@@ -61,14 +61,16 @@ function DisplayResources() {
   }
 
   return (
-    <div className="bg-black h-screen flex flex-col gap-2 p-10">
-      <h1 className="text-white text-3xl font-semibold my-3">{category}</h1>
+    <div className="bg-black h-screen flex flex-col gap-2 p-10 dark:bg-white dark:text-black">
+      <h1 className="text-white dark:text-black text-3xl font-semibold my-3">
+        {category}
+      </h1>
       <input
         type="text"
         placeholder="search a resource"
         value={searchVal}
         onChange={(e) => setSearchVal(e.target.value)}
-        className="placeholder:text-gray-400 py-2 pl-2 w-1/3 md:w-1/2 border border-white rounded-md text-white outline-none"
+        className="placeholder:text-gray-400 py-2 pl-2 w-1/3 md:w-1/2 border border-white dark:border-black rounded-md text-white dark:text-black outline-none"
       />
       {filteredResources?.length === 0 ? (
         <div className="flex justify-center items-center h-full">
@@ -80,7 +82,7 @@ function DisplayResources() {
         filteredResources?.map((r) => (
           <div
             key={r.id}
-            className="bg-[#282828] text-white w-[100%] xl:w-[60%] p-4 rounded-md"
+            className="bg-[#282828] text-white w-[100%] xl:w-[60%] p-4 rounded-md dark:bg-slate-100 dark:text-black"
           >
             <div className="flex justify-between">
               <h1 className="font-semibold text-lg">{r.title}</h1>

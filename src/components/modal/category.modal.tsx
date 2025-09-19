@@ -7,9 +7,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 import { useState } from "react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { supabase } from "@/supabaseClient";
 import { Plus } from "lucide-react";
 
@@ -40,7 +40,7 @@ function CategoryModal() {
         <DialogTrigger>
           <Plus size={18} className="hover:bg-[#3F3F3F] rounded" />
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="bg-black text-white dark:bg-white dark:text-black">
           <DialogHeader>
             <DialogTitle>Create New Category</DialogTitle>
             <DialogDescription>

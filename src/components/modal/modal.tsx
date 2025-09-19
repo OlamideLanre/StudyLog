@@ -11,10 +11,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Plus } from "lucide-react";
-import { Textarea } from "./ui/textarea";
+import { Textarea } from "../ui/textarea";
 import { useEffect, useState } from "react";
 import { supabase } from "@/supabaseClient";
-import type { category } from "./sidenav";
+import type { category } from "../sidenav";
 
 // Test();
 const Modal = () => {
