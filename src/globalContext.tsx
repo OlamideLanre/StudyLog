@@ -27,20 +27,20 @@ export const useCategoryContext = (): SelectedCategoryType => {
 };
 
 //resources context provider
-// type Resource = {
-//   id: number;
-//   title: string;
-//   link: string;
-//   notes: string;
-// };
+export type ResourceData = {
+  id: number;
+  title: string;
+  link: string;
+  notes: string;
+};
 
 type ResourceType = {
   id: number;
   title: string;
   link: string;
   notes: string;
-  selectedResource: [];
-  setResources: (selectedResource: []) => {};
+  selectedResource: ResourceData[];
+  setResources: (selectedResource: ResourceData[]) => {};
 };
 // Create the context with a default value
 const ResourcesContext = createContext<ResourceType | undefined>(undefined);
