@@ -67,16 +67,16 @@ const Sidebar = () => {
   }
 
   return (
-    <div className="w-60 bg-[#282828] h-screen p-4 flex flex-col dark:bg-[#6b9080] dark:border dark:border-gray-400">
+    <div className="w-60 bg-[#282828] h-screen p-4 flex flex-col dark:bg-[#112A46] dark:border dark:border-gray-400">
       <div className="flex justify-between items-end">
-        <h1 className="mt-10 font-bold text-xl py-1 ">BrainCrumbs</h1>
+        <h1 className="mt-10 font-bold text-xl py-1 ">StudyLog</h1>
         <button
           onClick={() => {
             setTheme(theme === "dark" ? "light" : "dark");
           }}
           className="text-white hover:text-gray-300 transition-colors pb-1"
         >
-          <Sun size={24} className="dark:text-black" />
+          <Sun size={24} />
         </button>
       </div>
 
@@ -97,7 +97,7 @@ const Sidebar = () => {
           <div className="flex items-center">
             <button
               onClick={() => setIsCollectionOpen(!isCollectionOpen)}
-              className="flex items-center justify-between w-full text-white py-2 px-2 hover:bg-gray-700 rounded transition-colors dark:hover:bg-[#a4c3b2]"
+              className="flex items-center justify-between w-full text-white py-2 px-2 rounded transition-colors"
             >
               <div className="flex items-center gap-3">
                 <img src={collectionIcon} alt="Collection Icon" />
@@ -127,8 +127,8 @@ const Sidebar = () => {
                 key={c.id}
                 className={
                   selectedCategory === c.id
-                    ? "bg-[#3F3F3F] dark:bg-[#a4c3b2] rounded-md "
-                    : `cursor-pointer hover:bg-[#3F3F3F] dark:hover:bg-[#a4c3b2] rounded-md`
+                    ? "bg-[#3F3F3F] dark:bg-[#81c3d7] rounded-md "
+                    : `cursor-pointer hover:bg-[#3F3F3F] dark:hover:bg-[#81c3d7] rounded-md`
                 }
               >
                 <p
