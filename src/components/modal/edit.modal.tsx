@@ -15,8 +15,8 @@ import { Textarea } from "../ui/textarea";
 import { useEffect, useState } from "react";
 import { supabase } from "@/supabaseClient";
 import type { category } from "../sidenav";
-
-const EditModal = ({ resourceID, onUpdated }) => {
+type editProps = { resourceID: number; onUpdated: () => void };
+const EditModal: React.FC<editProps> = ({ resourceID, onUpdated }) => {
   const [title, setTitle] = useState<string>();
   const [link, setLink] = useState<string>();
   const [notes, setNotes] = useState<string>();

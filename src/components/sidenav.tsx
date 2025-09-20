@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ChevronUp, Plus, Sun } from "lucide-react";
+import { ChevronUp, Sun } from "lucide-react";
 import collectionIcon from "../assets/collection.svg";
 import homeIcon2 from "../assets/homeIcon2.svg";
 import CategoryModal from "./modal/category.modal";

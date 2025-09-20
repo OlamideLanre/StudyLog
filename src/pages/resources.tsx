@@ -2,7 +2,6 @@ import DeleteModal from "@/components/modal/delete.modal";
 import EditModal from "@/components/modal/edit.modal";
 import { useResourcesContext } from "@/globalContext";
 import { supabase } from "@/supabaseClient";
-import { Delete, Edit } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 

@@ -9,8 +9,11 @@ import {
 } from "@/components/ui/dialog";
 import { Delete } from "lucide-react";
 import { Button } from "../ui/button";
+type MyComponentProps = {
+  deleteResource: () => void;
+};
 
-function DeleteModal({ deleteResource }) {
+const DeleteModal: React.FC<MyComponentProps> = ({ deleteResource }) => {
   return (
     <Dialog>
       <DialogTrigger>
@@ -49,6 +52,6 @@ function DeleteModal({ deleteResource }) {
       </DialogContent>
     </Dialog>
   );
-}
+};
 
 export default DeleteModal;
