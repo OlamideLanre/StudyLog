@@ -33,7 +33,7 @@ function DeleteModal({ deleteResource }) {
         <DialogFooter className="sm:justify-start">
           <Button
             type="button"
-            className="bg-red-500 hover:bg-red-400"
+            className="bg-red-500 hover:bg-red-400 dark:text-white"
             onClick={() => {
               deleteResource();
             }}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ChevronUp, Plus, Sun } from "lucide-react";
 import collectionIcon from "../assets/collection.svg";
-import homeIcon from "../assets/homeicon.svg";
+import homeIcon2 from "../assets/homeIcon2.svg";
 import CategoryModal from "./modal/category.modal";
 import { supabase } from "@/supabaseClient";
 import { Link, useNavigate } from "react-router-dom";
@@ -85,8 +85,8 @@ const Sidebar = () => {
       {/* Navigation Items */}
       <nav className="flex flex-col gap-2 mt-5">
         {/* Resources */}
-        <button className="flex items-center gap-3 text-orange-400 dark:text-white font-medium py-2 px-2">
-          <img src={homeIcon} alt="Collection Icon" />
+        <button className="flex items-center gap-3 text-white font-medium py-2 px-2">
+          <img src={homeIcon2} alt="Collection Icon" />
           <Link to="/" className="text-lg">
             Resources
           </Link>
