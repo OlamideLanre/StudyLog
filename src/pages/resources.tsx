@@ -82,7 +82,7 @@ function DisplayResources() {
         filteredResources?.map((r) => (
           <div
             key={r.id}
-            className="bg-[#282828] text-white w-[100%] xl:w-[60%] p-4 rounded-md dark:bg-slate-100 dark:text-black"
+            className="bg-[#282828] text-white w-[100%] xl:w-[60%] p-4 rounded-md dark:bg-[#eaf4f4] dark:text-black"
           >
             <div className="flex justify-between">
               <h1 className="font-semibold text-lg">{r.title}</h1>

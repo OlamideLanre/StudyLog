@@ -2,12 +2,12 @@ import Modal from "../components/modal/modal";
 
 const BrainCrumbs = () => {
   return (
-    <div className="flex h-screen bg-black text-white dark:bg-slate-100 dark:text-black">
+    <div className="flex h-screen bg-black text-white dark:bg-[#f6fff8] dark:text-black">
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col items-center justify-center px-8">
-          <h1 className="text-5xl font-bold mb-4 dark:text-orange-500">
+          <h1 className="text-5xl font-bold mb-4 dark:text-[#6b9080]">
             BrainCrumbs
           </h1>
           <p className="text-gray-400 text-xl mb-12">

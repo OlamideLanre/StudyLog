@@ -67,7 +67,7 @@ const Sidebar = () => {
   }
 
   return (
-    <div className="w-60 bg-[#282828] h-screen p-4 flex flex-col dark:bg-white dark:border dark:border-gray-400 dark:text-black">
+    <div className="w-60 bg-[#282828] h-screen p-4 flex flex-col dark:bg-[#6b9080] dark:border dark:border-gray-400">
       <div className="flex justify-between items-end">
         <h1 className="mt-10 font-bold text-xl py-1 ">BrainCrumbs</h1>
         <button
@@ -85,7 +85,7 @@ const Sidebar = () => {
       {/* Navigation Items */}
       <nav className="flex flex-col gap-2 mt-5">
         {/* Resources */}
-        <button className="flex items-center gap-3 text-orange-400 py-2 px-2">
+        <button className="flex items-center gap-3 text-orange-400 dark:text-white font-medium py-2 px-2">
           <img src={homeIcon} alt="Collection Icon" />
           <Link to="/" className="text-lg">
             Resources
@@ -97,16 +97,16 @@ const Sidebar = () => {
           <div className="flex items-center">
             <button
               onClick={() => setIsCollectionOpen(!isCollectionOpen)}
-              className="flex items-center justify-between w-full text-white py-2 px-2 hover:bg-gray-700 rounded transition-colors dark:hover:bg-orange-300"
+              className="flex items-center justify-between w-full text-white py-2 px-2 hover:bg-gray-700 rounded transition-colors dark:hover:bg-[#a4c3b2]"
             >
               <div className="flex items-center gap-3">
                 <img src={collectionIcon} alt="Collection Icon" />
-                <span className="text-lg dark:text-black">Collection</span>
+                <span className="text-lg">Collection</span>
               </div>
 
               <ChevronUp
                 size={16}
-                className={`transform transition-transform dark:text-black ${
+                className={`transform transition-transform ${
                   isCollectionOpen ? "" : "rotate-180"
                 }`}
               />
@@ -118,7 +118,7 @@ const Sidebar = () => {
           <div
             className={`${
               isCollectionOpen
-                ? "flex flex-col gap-2 text-white py-1 rounded-md dark:text-black"
+                ? "flex flex-col gap-2 text-white py-1 rounded-md"
                 : "hidden text-white"
             }`}
           >
@@ -127,12 +127,12 @@ const Sidebar = () => {
                 key={c.id}
                 className={
                   selectedCategory === c.id
-                    ? "bg-[#3F3F3F] py-1.5 dark:bg-orange-500 rounded"
-                    : `cursor-pointer hover:bg-[#3F3F3F] py-1.5 dark:hover:bg-orange-300`
+                    ? "bg-[#3F3F3F] dark:bg-[#a4c3b2] rounded-md "
+                    : `cursor-pointer hover:bg-[#3F3F3F] dark:hover:bg-[#a4c3b2] rounded-md`
                 }
               >
                 <p
-                  className="pl-10"
+                  className="pl-10  py-1.5 rounded-md"
                   onClick={() => {
                     setSelectedCategory(c.id);
                     fetchSelectedResource(c.id, c.category_name);
