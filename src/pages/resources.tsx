@@ -1,6 +1,7 @@
 import DeleteModal from "@/components/modal/delete.modal";
 import EditModal from "@/components/modal/edit.modal";
 import { useResourcesContext } from "@/globalContext";
+import { useOnlineStatus } from "@/hooks/useOnlineStatus";
 import { supabase } from "@/supabaseClient";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -10,6 +11,8 @@ function DisplayResources() {
   const [searchVal, setSearchVal] = useState("");
   const { id, category } = useParams();
   const { selectedResource, setResources } = useResourcesContext();
+  const [error, setError] = useState<string>("");
+  const isOnline = useOnlineStatus();
 
   // local copy for search
   const [filteredResources, setFilteredResources] = useState(selectedResource);
@@ -28,8 +31,20 @@ function DisplayResources() {
       setResources(removeResource);
       setFilteredResources(removeResource); // update local copy too
       console.log("deleted resource", selectedResource);
+    } else {
+      console.log(isOnline);
+      !isOnline
+        ? setError("Could not delete, you’re offline.")
+        : setError("Something went wrong, try again.");
     }
   };
+
+  //CLEAR ERROR WHEN INTERNET IS RECONNECTED
+  useEffect(() => {
+    if (isOnline) {
+      setError(""); // clear error when back online
+    }
+  }, [isOnline]);
 
   // Run search when searchVal or selectedResource changes
   useEffect(() => {
@@ -91,6 +106,7 @@ function DisplayResources() {
                   deleteResource={() => {
                     deleteResource(r.id);
                   }}
+                  delError={error}
                 />
               </div>
             </div>

@@ -11,19 +11,19 @@ import { Delete } from "lucide-react";
 import { Button } from "../ui/button";
 type MyComponentProps = {
   deleteResource: () => void;
+  delError: string;
 };
 
-const DeleteModal: React.FC<MyComponentProps> = ({ deleteResource }) => {
+const DeleteModal: React.FC<MyComponentProps> = ({
+  deleteResource,
+  delError,
+}) => {
+  // console.log(isOnline);
+
   return (
     <Dialog>
       <DialogTrigger>
-        <Delete
-          color="red"
-          //   onClick={() => {
-          //     deleteResource(r.id);
-          //   }}
-          className="cursor-pointer"
-        />
+        <Delete color="red" className="cursor-pointer" />
       </DialogTrigger>
       <DialogContent className="text-white bg-black dark:bg-white dark:text-black">
         <DialogHeader>
@@ -43,12 +43,10 @@ const DeleteModal: React.FC<MyComponentProps> = ({ deleteResource }) => {
           >
             Delete
           </Button>
-          {/* <DialogClose asChild>
-            <Button type="button" variant="secondary">
-              Close
-            </Button>
-          </DialogClose> */}
         </DialogFooter>
+        {delError && (
+          <p className="text-red-500 font-semibold text-[14px]">{delError}</p>
+        )}
       </DialogContent>
     </Dialog>
   );

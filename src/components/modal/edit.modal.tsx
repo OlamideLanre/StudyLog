@@ -16,7 +16,10 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/supabaseClient";
 import type { category } from "../sidenav";
 import type { ResourceData } from "@/globalContext";
+import { useOnlineStatus } from "@/hooks/useOnlineStatus";
+
 type editProps = { resourceID: number; onUpdated: () => void };
+
 const EditModal: React.FC<editProps> = ({ resourceID, onUpdated }) => {
   const [title, setTitle] = useState<string>();
   const [link, setLink] = useState<string>();
@@ -28,8 +31,10 @@ const EditModal: React.FC<editProps> = ({ resourceID, onUpdated }) => {
     title?: string;
     link?: string;
     notes?: string;
-    // choice?: string;
   }>({});
+  const [isConnected, setisConnected] = useState<string>();
+
+  const isOnline = useOnlineStatus();
 
   async function fetcResource(resourceID: number) {
     try {
@@ -42,6 +47,7 @@ const EditModal: React.FC<editProps> = ({ resourceID, onUpdated }) => {
         setFetchedResource(data);
       } else {
         console.log("an error occured: ", error);
+        // console.log(!isOnline ? "internet connection lost" : "user is online");
       }
     } catch (error) {
       console.log(error);
@@ -60,6 +66,7 @@ const EditModal: React.FC<editProps> = ({ resourceID, onUpdated }) => {
       return; //stop if validation fails
     }
 
+    //runs if no error
     const { data, error } = await supabase
       .from("resources")
       .update({ title: title, link: link, notes: notes, category_id: choice })
@@ -72,6 +79,9 @@ const EditModal: React.FC<editProps> = ({ resourceID, onUpdated }) => {
       setChoice(0);
       console.log(data);
     } else {
+      !isOnline
+        ? setisConnected("Couldn't update, you're offline.")
+        : setisConnected("An error occured, try again.");
       console.log("error occured while updating: ", error);
     }
     if (onUpdated) {
@@ -100,6 +110,12 @@ const EditModal: React.FC<editProps> = ({ resourceID, onUpdated }) => {
     }
   }, [fetchedResource]);
 
+  //CLEAR ERROR WHEN INTERNET IS RECONNECTED
+  useEffect(() => {
+    if (isOnline) {
+      setisConnected(""); // clear error when back online
+    }
+  }, [isOnline]);
   return (
     <>
       <Dialog>
@@ -114,6 +130,9 @@ const EditModal: React.FC<editProps> = ({ resourceID, onUpdated }) => {
             />
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px] bg-black text-white dark:bg-slate-100 dark:text-black">
+            {isConnected && (
+              <p className="text-red-500 font-semibold">{isConnected}</p>
+            )}
             <DialogHeader>
               <DialogTitle>Edit Resource</DialogTitle>
               <DialogDescription className="text-gray-400">
