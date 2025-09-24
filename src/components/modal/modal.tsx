@@ -21,18 +21,50 @@ const Modal = () => {
   const [title, setTitle] = useState<string>();
   const [link, setLink] = useState<string>();
   const [notes, setNotes] = useState<string>();
-  const [localCategory, setCategory] = useState<category[]>([]);
   const [choice, setChoice] = useState<string>();
+  const [localCategory, setCategory] = useState<category[]>([]);
+  const [errors, setErrors] = useState<{
+    title?: string;
+    link?: string;
+    notes?: string;
+    choice?: string;
+  }>({});
+
+  // const [error, setError] = useState<string>();
+  // const [formData, setFormData] = useState({
+  //   title: title,
+  //   link: link,
+  //   notes: notes,
+  //   choice: choice,
+  // });
 
   const insertResource = async () => {
+    const newErrors: typeof errors = {};
+
+    if (!title?.trim()) newErrors.title = "Title is required";
+    if (!link?.trim()) newErrors.link = "Link is required";
+    if (!notes?.trim()) newErrors.notes = "Note is required";
+    if (!choice?.trim()) newErrors.choice = "Category is required";
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return; //stop if validation fails
+    }
+
+    //no errors = proceed with insert
+    setErrors({});
     const { data, error } = await supabase
       .from("resources")
-      .insert([{ title: title, link: link, notes: notes, category_id: choice }])
+      .insert([{ title, link, notes, category_id: choice }])
       .select();
+
     console.log(data, error);
+
+    // reset fields
     setTitle("");
     setLink("");
     setNotes("");
+    setChoice("");
   };
 
   useEffect(() => {
@@ -86,7 +118,15 @@ const Modal = () => {
             </DialogHeader>
             <div className="grid gap-4">
               <div className="grid gap-3">
-                <Label htmlFor="name-1">Title</Label>
+                <Label htmlFor="name-1">
+                  {errors.title ? (
+                    <p className="text-red-500 text-[14px]">
+                      Title is required
+                    </p>
+                  ) : (
+                    "Title"
+                  )}
+                </Label>
                 <Input
                   id="name-1"
                   name="name"
@@ -94,12 +134,24 @@ const Modal = () => {
                   value={title}
                   onChange={(e) => {
                     setTitle(e.target.value);
+                    setErrors((prev) => ({ ...prev, title: undefined }));
                   }}
-                  className="dark:border dark:border-gray-500"
+                  className={
+                    errors.title
+                      ? " border border-red-500"
+                      : ` dark:border dark:border-gray-500`
+                  }
+                  required
                 />
               </div>
               <div className="grid gap-3">
-                <Label htmlFor="username-1">Link</Label>
+                <Label htmlFor="username-1">
+                  {errors.link ? (
+                    <p className="text-red-500 text-[14px]">Link is required</p>
+                  ) : (
+                    "Link"
+                  )}
+                </Label>
                 <Input
                   id="link-1"
                   name="link"
@@ -107,26 +159,48 @@ const Modal = () => {
                   value={link}
                   onChange={(e) => {
                     setLink(e.target.value);
+                    setErrors((prev) => ({ ...prev, link: undefined }));
                   }}
-                  className="dark:border dark:border-gray-500"
+                  className={
+                    errors.link
+                      ? "border border-red-500"
+                      : `dark:border dark:border-gray-500`
+                  }
+                  required
                 />
                 <Textarea
                   placeholder="short description of your resource"
                   value={notes}
                   onChange={(e) => {
                     setNotes(e.target.value);
+                    setErrors((prev) => ({ ...prev, notes: undefined }));
                   }}
-                  className="dark:border dark:border-gray-500"
+                  className={
+                    errors.notes
+                      ? "border border-red-500"
+                      : `dark:border dark:border-gray-500`
+                  }
+                  required
                 />
               </div>
               <div>
+                {errors.choice && (
+                  <p className="text-red-500 text-[14px] font-semibold">
+                    Select a category
+                  </p>
+                )}
                 <select
                   value={choice}
                   defaultValue="Select Category"
-                  className="select dark:bg-slate-200"
                   onChange={(e) => {
-                    setChoice(e.target.value), console.log(choice);
+                    setChoice(e.target.value);
+                    setErrors((prev) => ({ ...prev, choice: undefined }));
                   }}
+                  className={`${
+                    errors.choice
+                      ? "border border-red-500 select dark:bg-slate-200"
+                      : "dark:border dark:border-gray-500 select dark:bg-slate-200"
+                  }`}
                 >
                   <option disabled={true}>Select Category</option>
                   {localCategory.map((c) => (

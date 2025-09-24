@@ -49,17 +49,21 @@ function CategoryModal() {
           </DialogHeader>
           <div className="grid gap-3">
             {/* <Label htmlFor="name-1">Category Name</Label> */}
+            {error && (
+              <p className="text-red-500 text-[14px] font-semibold">{error}</p>
+            )}
             <Input
               id="category-1"
               name="category"
               placeholder="Enter category name e.g AI & ML"
+              className="border border-black"
               value={category}
               onChange={(e) => {
                 setCategory(e.target.value);
+                setError("");
               }}
               required
             />
-            {error ? <p className="text-red-500">{error}</p> : <p></p>}
           </div>
           <DialogFooter>
             <Button type="submit" onClick={createCategory}>

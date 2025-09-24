@@ -24,6 +24,12 @@ const EditModal: React.FC<editProps> = ({ resourceID, onUpdated }) => {
   const [allCategory, setCategory] = useState<category[]>([]);
   const [fetchedResource, setFetchedResource] = useState<ResourceData[]>([]);
   const [choice, setChoice] = useState<number>();
+  const [errors, setErrors] = useState<{
+    title?: string;
+    link?: string;
+    notes?: string;
+    // choice?: string;
+  }>({});
 
   async function fetcResource(resourceID: number) {
     try {
@@ -43,6 +49,17 @@ const EditModal: React.FC<editProps> = ({ resourceID, onUpdated }) => {
   }
   // UPDATE RESOURCE
   async function updateResource(resourceID: number) {
+    const newErrors: typeof errors = {};
+
+    if (!title?.trim()) newErrors.title = "Title is required";
+    if (!link?.trim()) newErrors.link = "Link is required";
+    if (!notes?.trim()) newErrors.notes = "Note is required";
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return; //stop if validation fails
+    }
+
     const { data, error } = await supabase
       .from("resources")
       .update({ title: title, link: link, notes: notes, category_id: choice })
@@ -107,7 +124,15 @@ const EditModal: React.FC<editProps> = ({ resourceID, onUpdated }) => {
             {fetchedResource.map((r) => (
               <div className="grid gap-4" key={r.id}>
                 <div className="grid gap-3">
-                  <Label htmlFor="name-1">Title</Label>
+                  <Label htmlFor="name-1">
+                    {errors.title ? (
+                      <p className="text-red-500 text-[14px]">
+                        Title is required
+                      </p>
+                    ) : (
+                      "Title"
+                    )}
+                  </Label>
                   <Input
                     id="name-1"
                     name="name"
@@ -120,7 +145,15 @@ const EditModal: React.FC<editProps> = ({ resourceID, onUpdated }) => {
                   />
                 </div>
                 <div className="grid gap-3">
-                  <Label htmlFor="username-1">Link</Label>
+                  <Label htmlFor="username-1">
+                    {errors.link ? (
+                      <p className="text-red-500 text-[14px]">
+                        Link is required
+                      </p>
+                    ) : (
+                      "Link"
+                    )}
+                  </Label>
                   <Input
                     id="link-1"
                     name="link"
@@ -133,7 +166,7 @@ const EditModal: React.FC<editProps> = ({ resourceID, onUpdated }) => {
                   />
                   <Textarea
                     placeholder="short description of your resource"
-                    value={notes || "no notes added"}
+                    value={notes}
                     onChange={(e) => {
                       setNotes(e.target.value);
                     }}
