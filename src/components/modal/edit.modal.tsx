@@ -130,15 +130,15 @@ const EditModal: React.FC<editProps> = ({ resourceID, onUpdated }) => {
             />
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px] bg-black text-white dark:bg-slate-100 dark:text-black">
-            {isConnected && (
-              <p className="text-red-500 font-semibold">{isConnected}</p>
-            )}
             <DialogHeader>
               <DialogTitle>Edit Resource</DialogTitle>
               <DialogDescription className="text-gray-400">
                 Edit an existing resource here. Click save when you&apos;re
                 done.
               </DialogDescription>
+              {isConnected && (
+                <p className="text-red-500 font-semibold">{isConnected}</p>
+              )}
             </DialogHeader>
             {fetchedResource.map((r) => (
               <div className="grid gap-4" key={r.id}>

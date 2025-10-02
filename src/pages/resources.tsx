@@ -75,7 +75,7 @@ function DisplayResources() {
   }
 
   return (
-    <div className="bg-black h-screen flex flex-col gap-2 p-10 dark:bg-white dark:text-black">
+    <div className="bg-black h-screen flex flex-col gap-2 p-5 md:p-10 dark:bg-white dark:text-black">
       <h1 className="text-white dark:text-black text-3xl font-semibold my-3">
         {category}
       </h1>
@@ -84,7 +84,7 @@ function DisplayResources() {
         placeholder="search a resource"
         value={searchVal}
         onChange={(e) => setSearchVal(e.target.value)}
-        className="placeholder:text-gray-400 py-2 pl-2 w-1/3 md:w-1/2 border border-white dark:border-black rounded-md text-white dark:text-black outline-none"
+        className="placeholder:text-gray-400 py-2 pl-2 w-full md:w-1/2 border border-white dark:border-black rounded-md text-white dark:text-black outline-none"
       />
       {filteredResources?.length === 0 ? (
         <div className="flex justify-center items-center h-full">
@@ -96,7 +96,7 @@ function DisplayResources() {
         filteredResources?.map((r) => (
           <div
             key={r.id}
-            className="bg-[#282828] text-white w-[100%] xl:w-[60%] p-4 rounded-md dark:bg-[#eaf4f4] dark:text-black"
+            className="bg-[#282828] text-white w-full xl:w-[60%] p-4 rounded-md dark:bg-[#eaf4f4] dark:text-black"
           >
             <div className="flex justify-between">
               <h1 className="font-semibold text-lg">{r.title}</h1>
