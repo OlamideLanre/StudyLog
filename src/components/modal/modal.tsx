@@ -84,27 +84,20 @@ const Modal = () => {
     fetchCategory();
   }, []);
 
-  // useEffect(() => {
-  //   console.log("Updated localCategory:", localCategory);
-  //   console.log(
-  //     "maping local category: ",
-  //     localCategory.map((c) => c.category_name)
-  //   );
-  // }, [localCategory]);
-
   return (
     <>
       <Dialog>
         <form>
           <DialogTrigger asChild>
-            <div className="border border-gray-700 rounded-xl p-8 min-w-[150] hover:bg-gray-900 dark:hover:bg-slate-200 transition-colors cursor-pointer flex items-center justify-center">
-              <div className="text-center">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <span className="text-xl font-semibold text-gray-400">
-                    New Entry
-                  </span>
-                  <Plus size={20} className="text-gray-400" />
-                </div>
+            <div
+              className="border border-gray-700 rounded-xl p-8 min-w-[150] hover:bg-gray-900 dark:hover:bg-[#112A46] hover:text-white transition-colors cursor-pointer flex items-center justify-center"
+              title="use to add a new resource"
+            >
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <span className="text-xl font-semibold text-gray-400">
+                  New Entry
+                </span>
+                <Plus size={20} className="text-gray-400" />
               </div>
             </div>
           </DialogTrigger>

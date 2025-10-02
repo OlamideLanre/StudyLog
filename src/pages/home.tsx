@@ -1,6 +1,28 @@
+import { supabase } from "@/supabaseClient";
 import Modal from "../components/modal/modal";
+import { useEffect, useState } from "react";
+import type { category } from "@/components/sidenav";
+import { useNavigate } from "react-router-dom";
 
 const BrainCrumbs = () => {
+  const [topTwoCategory, setCategory] = useState<category[]>();
+  const navigate = useNavigate();
+  useEffect(() => {
+    async function firstTwoCategories() {
+      let { data: category, error } = await supabase
+        .from("category")
+        .select("*")
+        .limit(2);
+      if (error) {
+        console.log("an error occured");
+      } else {
+        setCategory(category ?? []);
+        console.log(topTwoCategory);
+      }
+    }
+    firstTwoCategories();
+  }, []);
+
   return (
     <div className="flex h-screen bg-black text-white dark:bg-white dark:text-black">
       {/* Main Content */}
@@ -15,20 +37,23 @@ const BrainCrumbs = () => {
           </p>
 
           {/* Collection Cards */}
-          <div className="">
-            {/* Tech Card */}
-            {/* <div className="border border-[#37474F] rounded-xl p-8 min-w-[200px] hover:bg-gray-800 transition-colors cursor-pointer">
-              <h3 className="text-2xl font-semibold mb-2">Tech</h3>
-              <p className="text-gray-400">10 saved</p>
-            </div> */}
 
-            {/* School Card */}
-            {/* <div className="border border-[#37474F] rounded-xl p-8 min-w-[200px] hover:bg-gray-800 transition-colors cursor-pointer">
-              <h3 className="text-2xl font-semibold mb-2">School</h3>
-              <p className="text-gray-400">10 saved</p>
-            </div> */}
+          <div className="flex flex-col md:flex-row gap-2">
+            {topTwoCategory?.map((c) => (
+              <div
+                key={c.id}
+                className="border border-gray-400 rounded-xl p-8 min-w-[150] hover:bg-gray-900 dark:hover:bg-[#112A46] hover:text-white text-[#112A46] transition-colors cursor-pointer"
+                onClick={() =>
+                  navigate(`/resources/${c.id}/${c.category_name}`)
+                }
+              >
+                <h3 className="text-2xl font-semibold mb-2">
+                  {c.category_name}
+                </h3>
+                {/* <p className="text-gray-400">10 saved</p> */}
+              </div>
+            ))}
 
-            {/* New Tab Card */}
             <Modal />
           </div>
         </div>

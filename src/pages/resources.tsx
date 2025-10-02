@@ -62,7 +62,7 @@ function DisplayResources() {
   }, [searchVal, selectedResource]);
 
   //REFETCH AFTER UPDATE
-  async function fetchResources() {
+  async function fetchUpdatedResources() {
     if (!category) return;
     let { data, error } = await supabase
       .from("resources")
@@ -73,6 +73,21 @@ function DisplayResources() {
       setResources(data ?? []);
     }
   }
+  // FETCHES RESOURCES WHEN USER REDIRECTS FROM LINK OR DIRECT URL
+  useEffect(() => {
+    async function display() {
+      let { data: resources, error } = await supabase
+        .from("resources")
+        .select("*")
+        .eq("category_id", id);
+      if (error) {
+        setError("Something went wrong, try again.");
+      } else {
+        setResources(resources ?? []);
+      }
+    }
+    display();
+  }, [id]);
 
   return (
     <div className="bg-black h-screen flex flex-col gap-2 p-5 md:p-10 dark:bg-white dark:text-black">
@@ -88,7 +103,7 @@ function DisplayResources() {
       />
       {filteredResources?.length === 0 ? (
         <div className="flex justify-center items-center h-full">
-          <h1 className="font-semibold text-xl text-white">
+          <h1 className="font-semibold text-xl dark:text-black text-white">
             No resources found
           </h1>
         </div>
@@ -101,7 +116,10 @@ function DisplayResources() {
             <div className="flex justify-between">
               <h1 className="font-semibold text-lg">{r.title}</h1>
               <div className="flex gap-3 items-center">
-                <EditModal resourceID={r.id} onUpdated={fetchResources} />
+                <EditModal
+                  resourceID={r.id}
+                  onUpdated={fetchUpdatedResources}
+                />
                 <DeleteModal
                   deleteResource={() => {
                     deleteResource(r.id);
