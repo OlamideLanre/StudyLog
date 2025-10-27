@@ -93,7 +93,7 @@ function DisplayResources() {
   //SHAREABLE LINK
 
   async function ShareResource(ID: number) {
-    const BaseURL = `https://localhost:5173/share/${ID}`;
+    const BaseURL = `https://study-log-tawny.vercel.app/share/${ID}`;
     try {
       await window.navigator.clipboard.writeText(BaseURL);
       toast("Resource link to clipboard!");
