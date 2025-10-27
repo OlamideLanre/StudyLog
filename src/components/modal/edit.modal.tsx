@@ -38,13 +38,13 @@ const EditModal: React.FC<editProps> = ({ resourceID, onUpdated }) => {
 
   async function fetcResource(resourceID: number) {
     try {
-      let { data, error } = await supabase
+      let { data: resource, error } = await supabase
         .from("resources")
         .select("*")
         .eq("id", resourceID);
 
       if (!error) {
-        setFetchedResource(data);
+        setFetchedResource(resource ?? []);
       } else {
         console.log("an error occured: ", error);
         // console.log(!isOnline ? "internet connection lost" : "user is online");
@@ -93,7 +93,7 @@ const EditModal: React.FC<editProps> = ({ resourceID, onUpdated }) => {
     async function fetchResourceCategory() {
       let { data, error } = await supabase.from("category").select("*");
       if (!error) {
-        setCategory(data);
+        setCategory(data ?? []);
       }
     }
     fetchResourceCategory();
@@ -198,7 +198,7 @@ const EditModal: React.FC<editProps> = ({ resourceID, onUpdated }) => {
                     defaultValue="Select Category"
                     className="select dark:bg-slate-200"
                     onChange={(e) => {
-                      setChoice(e.target.value), console.log(choice);
+                      setChoice(Number(e.target.value)), console.log(choice);
                     }}
                   >
                     <option disabled={true}>Select Category</option>

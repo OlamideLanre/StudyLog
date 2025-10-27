@@ -38,13 +38,14 @@ export type ResourceData = {
   title: string;
   link: string;
   notes: string;
+  category_id: number;
 };
 
 type ResourceType = {
-  id: number;
-  title: string;
-  link: string;
-  notes: string;
+  // id: number;
+  // title: string;
+  // link: string;
+  // notes: string;
   selectedResource: ResourceData[];
   setResources: React.Dispatch<React.SetStateAction<ResourceData[]>>;
 };

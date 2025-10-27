@@ -16,7 +16,7 @@ export interface category {
 
 const Sidebar = () => {
   const { theme, setTheme } = useTheme();
-  const [loading, setLoading] = useState<Boolean>();
+  // const [loading, setLoading] = useState<Boolean>();
   const [isCollectionOpen, setIsCollectionOpen] = useState(true);
   const [allCategory, setCategory] = useState<category[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -47,7 +47,7 @@ const Sidebar = () => {
     category_name: string
   ) {
     try {
-      setLoading(true);
+      // setLoading(true);
       let { data: resources, error } = await supabase
         .from("resources")
         .select("*")
@@ -55,14 +55,14 @@ const Sidebar = () => {
 
       if (!error) {
         navigate(`/resources/${category_id}/${category_name}`);
-        setLoading(false);
+        // setLoading(false);
         setResources(resources ?? []);
         // console.log(selectedResource);
       } else {
         console.log(error);
       }
     } catch (error) {
-      setLoading(false);
+      // setLoading(false);
       console.log(error);
     }
   }
