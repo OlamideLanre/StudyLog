@@ -6,6 +6,9 @@
 button{
     cursor: pointer;
 }
+body{
+    background-color: white;
+}
 
 @theme inline {
     --radius-sm: calc(var(--radius) - 4px);

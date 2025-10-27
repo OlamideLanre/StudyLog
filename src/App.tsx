@@ -4,6 +4,7 @@ import BrainCrumbs from "./pages/home";
 import DisplayResources from "./pages/resources";
 import Sidebar from "./components/sidenav";
 import ErrorBoundary from "./errorboundary";
+import SharedResource from "./pages/share";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
                 path="/resources/:id/:category"
                 element={<DisplayResources />}
               />
+              <Route path="/share/:id" element={<SharedResource />} />
             </Routes>
           </ErrorBoundary>
         </div>

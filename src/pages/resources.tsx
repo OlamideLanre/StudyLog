@@ -3,11 +3,13 @@ import EditModal from "@/components/modal/edit.modal";
 import { useResourcesContext } from "@/globalContext";
 import { useOnlineStatus } from "@/hooks/useOnlineStatus";
 import { supabase } from "@/supabaseClient";
+import { Share } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 function DisplayResources() {
-  const [loading, setLoading] = useState<Boolean>(false);
+  // const [loading, setLoading] = useState<Boolean>(false);
   const [searchVal, setSearchVal] = useState("");
   const { id, category } = useParams();
   const { selectedResource, setResources } = useResourcesContext();
@@ -88,6 +90,18 @@ function DisplayResources() {
     }
     display();
   }, [id]);
+  //SHAREABLE LINK
+
+  async function ShareResource(ID: number) {
+    const BaseURL = `https://localhost:5173/share/${ID}`;
+    try {
+      await window.navigator.clipboard.writeText(BaseURL);
+      toast("Resource link to clipboard!");
+    } catch (err) {
+      console.error("Unable to copy to clipboard.", err);
+      toast("Copy to link failed.");
+    }
+  }
 
   return (
     <div className="bg-black h-screen flex flex-col gap-2 p-5 md:p-10 dark:bg-white dark:text-black">
@@ -126,6 +140,12 @@ function DisplayResources() {
                   }}
                   delError={error}
                 />
+                <Share
+                  className="cursor-pointer"
+                  onClick={() => ShareResource(r.id)}
+                  size={17}
+                />
+                <ToastContainer />
               </div>
             </div>
 
