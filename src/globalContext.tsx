@@ -1,16 +1,22 @@
-import React, { createContext, useContext, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  type ReactNode,
+} from "react";
+
 // Define the type for the context value
 type SelectedCategoryType = {
-  selectedCategory: number;
-  setSelectedCategory: (selectedCategory: number) => {};
+  selectedCategory: number | null;
+  setSelectedCategory: React.Dispatch<React.SetStateAction<number | null>>;
 };
 // Create the context with a default value
 const CategoryContext = createContext<SelectedCategoryType | undefined>(
   undefined
 );
 
-export const CategoryProvider = ({ children }) => {
-  const [selectedCategory, setSelectedCategory] = useState();
+export const CategoryProvider = ({ children }: { children: ReactNode }) => {
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   return (
     <CategoryContext.Provider value={{ selectedCategory, setSelectedCategory }}>
       {children}
@@ -40,13 +46,13 @@ type ResourceType = {
   link: string;
   notes: string;
   selectedResource: ResourceData[];
-  setResources: (selectedResource: ResourceData[]) => {};
+  setResources: React.Dispatch<React.SetStateAction<ResourceData[]>>;
 };
 // Create the context with a default value
 const ResourcesContext = createContext<ResourceType | undefined>(undefined);
 
-export const ResourceProvider = ({ children }) => {
-  const [selectedResource, setResources] = useState<[]>();
+export const ResourceProvider = ({ children }: { children: ReactNode }) => {
+  const [selectedResource, setResources] = useState<ResourceData[]>([]);
   return (
     <ResourcesContext.Provider value={{ selectedResource, setResources }}>
       {children}

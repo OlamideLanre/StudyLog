@@ -20,7 +20,7 @@ const SharedResource = () => {
     }
   }
   useEffect(() => {
-    displaySharedResource(id);
+    displaySharedResource(Number(id));
   }, [id]);
 
   return (
