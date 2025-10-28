@@ -5,6 +5,8 @@ import DisplayResources from "./pages/resources";
 import Sidebar from "./components/sidenav";
 // import ErrorBoundary from "./errorboundary";
 import SharedResource from "./pages/share";
+import SignIn from "./auth/signIn";
+import SignUp from "./auth/signUp";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
           {/* <ErrorBoundary> */}
           <Routes>
             <Route path="/" element={<BrainCrumbs />} />
+            <Route path="/auth/signin" element={<SignIn />} />
+            <Route path="/auth/signup" element={<SignUp />} />
             <Route
               path="/resources/:id/:category"
               element={<DisplayResources />}

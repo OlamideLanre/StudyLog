@@ -1,6 +1,7 @@
 import DeleteModal from "@/components/modal/delete.modal";
 import EditModal from "@/components/modal/edit.modal";
 import { useResourcesContext } from "@/globalContext";
+import { user } from "@/hooks/getUser";
 import { useOnlineStatus } from "@/hooks/useOnlineStatus";
 import { supabase } from "@/supabaseClient";
 import { Share } from "lucide-react";
@@ -9,7 +10,7 @@ import { Link, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 function DisplayResources() {
-  // const [loading, setLoading] = useState<Boolean>(false);
+  const [loading, setLoading] = useState<Boolean>(true);
   const [searchVal, setSearchVal] = useState("");
   const { id, category } = useParams();
   const { selectedResource, setResources } = useResourcesContext();
@@ -69,6 +70,7 @@ function DisplayResources() {
     let { data, error } = await supabase
       .from("resources")
       .select("*")
+      .eq("user_id", user?.id)
       .eq("category_id", id);
 
     if (!error) {
@@ -81,17 +83,20 @@ function DisplayResources() {
       let { data: resources, error } = await supabase
         .from("resources")
         .select("*")
+        .eq("user_id", user?.id)
         .eq("category_id", id);
+      setLoading(true);
       if (error) {
         setError("Something went wrong, try again.");
       } else {
         setResources(resources ?? []);
+        setLoading(false);
       }
     }
     display();
   }, [id]);
-  //SHAREABLE LINK
 
+  //SHAREABLE LINK
   async function ShareResource(ID: number) {
     const BaseURL = `https://study-log-tawny.vercel.app/share/${ID}`;
     try {
@@ -115,7 +120,9 @@ function DisplayResources() {
         onChange={(e) => setSearchVal(e.target.value)}
         className="placeholder:text-gray-400 py-2 pl-2 w-full md:w-1/2 border border-white dark:border-black rounded-md text-white dark:text-black outline-none"
       />
-      {filteredResources?.length === 0 ? (
+      {loading ? (
+        <p>Loading...</p>
+      ) : filteredResources?.length === 0 ? (
         <div className="flex justify-center items-center h-full">
           <h1 className="font-semibold text-xl dark:text-black text-white">
             No resources found

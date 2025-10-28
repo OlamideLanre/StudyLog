@@ -3,6 +3,7 @@ import Modal from "../components/modal/modal";
 import { useEffect, useState } from "react";
 import type { category } from "@/components/sidenav";
 import { useNavigate } from "react-router-dom";
+import { user } from "@/hooks/getUser";
 
 const BrainCrumbs = () => {
   const [topTwoCategory, setCategory] = useState<category[]>();
@@ -12,6 +13,7 @@ const BrainCrumbs = () => {
       let { data: category, error } = await supabase
         .from("category")
         .select("*")
+        .eq("user_id", user?.id)
         .limit(2);
       if (error) {
         console.log("an error occured");

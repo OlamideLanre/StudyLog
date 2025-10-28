@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ChevronUp, Sun, Menu } from "lucide-react";
+import { ChevronUp, Sun, Menu, Loader2 } from "lucide-react";
 import collectionIcon from "../assets/collection.svg";
 import homeIcon2 from "../assets/homeIcon2.svg";
 import CategoryModal from "./modal/category.modal";
@@ -7,6 +7,8 @@ import { supabase } from "@/supabaseClient";
 import { Link, useNavigate } from "react-router-dom";
 import { useCategoryContext, useResourcesContext } from "@/globalContext";
 import { useTheme } from "@/ThemeToggle";
+import { user } from "@/hooks/getUser";
+import SignOutButton from "@/auth/signOut";
 
 export interface category {
   id: number;
@@ -16,7 +18,7 @@ export interface category {
 
 const Sidebar = () => {
   const { theme, setTheme } = useTheme();
-  // const [loading, setLoading] = useState<Boolean>();
+  const [loading, setLoading] = useState<Boolean>(false);
   const [isCollectionOpen, setIsCollectionOpen] = useState(true);
   const [allCategory, setCategory] = useState<category[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -27,15 +29,19 @@ const Sidebar = () => {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
+        setLoading(true);
         let { data: category, error } = await supabase
           .from("category")
-          .select("*");
+          .select("*")
+          .eq("user_id", user?.id);
         if (!error) {
           setCategory(category ?? []);
+          setLoading(false);
         } else {
           console.log(error);
         }
       } catch (error) {
+        setLoading(false);
         console.log("An error occured while fetching category data");
       }
     };
@@ -47,26 +53,44 @@ const Sidebar = () => {
     category_name: string
   ) {
     try {
-      // setLoading(true);
       let { data: resources, error } = await supabase
         .from("resources")
         .select("*")
+        .eq("user_id", user?.id)
         .eq("category_id", category_id);
 
       if (!error) {
         navigate(`/resources/${category_id}/${category_name}`);
-        // setLoading(false);
         setResources(resources ?? []);
-        // console.log(selectedResource);
+        console.log("resources: ", resources);
       } else {
         console.log(error);
       }
     } catch (error) {
-      // setLoading(false);
       console.log(error);
     }
   }
-
+  //   try {
+  //     const {
+  //       data: { user },
+  //     } = await supabase.auth.getUser();
+  //     console.log("active user: ", user);
+  //     let { data: resources, error } = await supabase
+  //       .from("resources")
+  //       .select("*")
+  //       .eq("user_id", user?.id);
+  //     if (!error) {
+  //       console.log("users saves: ", resources);
+  //     } else {
+  //       console.log(error);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+  // useEffect(() => {
+  //   testFetch();
+  // }, []);
   return (
     <>
       <div className="lg:hidden pt-5 bg-[#282828] dark:bg-[#112A46] h-screen">
@@ -95,14 +119,17 @@ const Sidebar = () => {
         )}
         <div className="flex justify-between items-end">
           <h1 className="mt-10 font-bold text-xl py-1 text-white">StudyLog</h1>
-          <button
-            onClick={() => {
-              setTheme(theme === "dark" ? "light" : "dark");
-            }}
-            className="text-white hover:text-gray-300 transition-colors pb-1"
-          >
-            <Sun size={24} />
-          </button>
+          <div className="flex gap-2">
+            <SignOutButton />
+            <button
+              onClick={() => {
+                setTheme(theme === "dark" ? "light" : "dark");
+              }}
+              className="text-white hover:text-gray-300 transition-colors pb-1"
+            >
+              <Sun size={24} />
+            </button>
+          </div>
         </div>
 
         <hr className="text-white" />
@@ -146,27 +173,33 @@ const Sidebar = () => {
                   : "hidden text-white"
               }`}
             >
-              {allCategory?.map((c) => (
-                <div
-                  key={c.id}
-                  className={
-                    selectedCategory === c.id
-                      ? "bg-[#3F3F3F] dark:bg-[#81c3d7] rounded-md "
-                      : "cursor-pointer hover:bg-[#3F3F3F] dark:hover:bg-[#81c3d7] rounded-md"
-                  }
-                >
-                  <p
-                    className="pl-10 py-1.5 rounded-md"
-                    onClick={() => {
-                      setSelectedCategory(c.id);
-                      fetchSelectedResource(c.id, c.category_name);
-                      setIsOpen(false); // close sidebar on mobile
-                    }}
+              {loading ? (
+                <p className="pl-10 py-1.5 rounded-md">
+                  <Loader2 />
+                </p>
+              ) : (
+                allCategory?.map((c) => (
+                  <div
+                    key={c.id}
+                    className={
+                      selectedCategory === c.id
+                        ? "bg-[#3F3F3F] dark:bg-[#81c3d7] rounded-md "
+                        : "cursor-pointer hover:bg-[#3F3F3F] dark:hover:bg-[#81c3d7] rounded-md"
+                    }
                   >
-                    {c.category_name}
-                  </p>
-                </div>
-              ))}
+                    <p
+                      className="pl-10 py-1.5 rounded-md"
+                      onClick={() => {
+                        setSelectedCategory(c.id);
+                        fetchSelectedResource(c.id, c.category_name);
+                        setIsOpen(false); // close sidebar on mobile
+                      }}
+                    >
+                      {c.category_name}
+                    </p>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </nav>
