@@ -2,9 +2,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/supabaseClient";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const SignUp = () => {
+  const redirect = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setpassword] = useState<string>("");
   async function signUpNewUser() {
@@ -15,9 +17,25 @@ const SignUp = () => {
       //     emailRedirectTo: "/",
       //   },
     });
-    !error
-      ? console.log("user: ", data)
-      : console.log("an error occured while creating acct: ", error);
+    if (!error) {
+      redirect("/");
+    } else {
+      switch (error.message) {
+        case "Password should be at least 6 characters":
+          toast.error("Password should be at least 6 characters");
+          break;
+        case `Email address "${email}" is invalid`:
+          toast.error(
+            "Invalid Email Address. Enter a valid email to create your account."
+          );
+          break;
+        default:
+          toast.error(
+            "An error occured while creating your acctount.Try again later"
+          );
+          break;
+      }
+    }
   }
   return (
     <>
@@ -59,6 +77,7 @@ const SignUp = () => {
                 SignIn
               </Link>
             </p>
+            <ToastContainer hideProgressBar={true} />
           </div>
         </div>
       </div>

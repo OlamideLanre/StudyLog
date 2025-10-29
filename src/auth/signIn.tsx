@@ -3,6 +3,7 @@ import { supabase } from "@/supabaseClient";
 import { Label } from "@radix-ui/react-label";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const SignIn = () => {
   const redirect = useNavigate();
@@ -16,8 +17,21 @@ const SignIn = () => {
     if (!error) {
       redirect("/");
       console.log("login sucessful: ", data);
+    } else {
+      switch (error.message) {
+        case "Email not confirmed":
+          toast.error("Kindly Confirm your email to login");
+          break;
+        case "Invalid login credentials":
+          toast.error("Invalid login credentials");
+          break;
+        default:
+          toast.error(
+            "An error occured while trying to log in.Try again later"
+          );
+          break;
+      }
     }
-    console.log("Failed to login: ", error);
   }
   return (
     <>
@@ -57,6 +71,7 @@ const SignIn = () => {
               SignUp
             </Link>
           </p>
+          <ToastContainer hideProgressBar={true} />
         </div>
       </div>
     </>
