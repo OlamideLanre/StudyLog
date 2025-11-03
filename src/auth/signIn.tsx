@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/supabaseClient";
 import { Label } from "@radix-ui/react-label";
+import { Loader2Icon } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
@@ -9,15 +10,18 @@ const SignIn = () => {
   const redirect = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setpassword] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   async function signInWithEmail() {
     const { data, error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
     });
     if (!error) {
+      setIsLoading(true);
       redirect("/");
       console.log("login sucessful: ", data);
     } else {
+      setIsLoading(false);
       switch (error.message) {
         case "Email not confirmed":
           toast.error("Kindly Confirm your email to login");
@@ -29,6 +33,8 @@ const SignIn = () => {
           toast.error(
             "An error occured while trying to log in.Try again later"
           );
+          console.log(error.code);
+
           break;
       }
     }
@@ -60,7 +66,7 @@ const SignIn = () => {
             className="bg-blue-950 text-white py-2 rounded-md"
             onClick={signInWithEmail}
           >
-            Login
+            {isLoading ? <Loader2Icon /> : "Login"}
           </button>
           <p className="text-sm text-center text-black">
             Dont have an account?
