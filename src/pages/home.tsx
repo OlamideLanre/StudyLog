@@ -4,9 +4,12 @@ import { useEffect, useState } from "react";
 import type { category } from "@/components/sidenav";
 import { useNavigate } from "react-router-dom";
 import { user } from "@/hooks/getUser";
+import Sidebar from "@/components/sidenav";
 
 const BrainCrumbs = () => {
   const [topTwoCategory, setCategory] = useState<category[]>();
+  const name = localStorage.getItem("userName");
+
   const navigate = useNavigate();
   useEffect(() => {
     async function firstTwoCategories() {
@@ -27,15 +30,18 @@ const BrainCrumbs = () => {
 
   return (
     <div className="flex h-screen bg-black text-white dark:bg-white dark:text-black">
+      <div className="text-white">
+        <Sidebar />
+      </div>
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col items-center justify-center px-8">
           <h1 className="text-5xl font-bold mb-4 dark:text-[#112A46]">
-            StudyLog
+            Hi {name}
           </h1>
           <p className="text-gray-400 text-xl mb-12">
-            What are you saving today?
+            What did you study today?
           </p>
 
           {/* Collection Cards */}

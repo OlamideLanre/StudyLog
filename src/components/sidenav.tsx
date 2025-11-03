@@ -70,6 +70,7 @@ const Sidebar = () => {
       console.log(error);
     }
   }
+
   //   try {
   //     const {
   //       data: { user },
@@ -93,116 +94,116 @@ const Sidebar = () => {
   // }, []);
   return (
     <>
-      <div className="lg:hidden pt-5 bg-[#282828] dark:bg-[#112A46] h-screen">
-        {/* <h1 className="text-white font-bold text-xl">StudyLog</h1> */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="text-white focus:outline-none"
-        >
-          {isOpen ? "" : <Menu size={28} />}
-        </button>
-      </div>
+      <div>
+        <div className="lg:hidden pt-5 bg-[#282828] dark:bg-[#112A46] h-screen">
+          {/* <h1 className="text-white font-bold text-xl">StudyLog</h1> */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="text-white focus:outline-none"
+          >
+            {isOpen ? "" : <Menu size={28} />}
+          </button>
+        </div>
 
-      {/* Sidebar */}
-      <div
-        className={`
+        <div
+          className={`
     fixed top-0 left-0 h-screen w-60 bg-[#282828] p-4 flex flex-col dark:bg-[#112A46] 
     transform transition-transform duration-300 
     ${isOpen ? "translate-x-0" : "-translate-x-full"} 
     lg:translate-x-0 lg:static
   `}
-      >
-        {isOpen ? (
-          <Menu size={28} color="white" onClick={() => setIsOpen(!isOpen)} />
-        ) : (
-          ""
-        )}
-        <div className="flex justify-between items-end">
-          <h1 className="mt-10 font-bold text-xl py-1 text-white">StudyLog</h1>
-          <div className="flex gap-2">
-            <SignOutButton />
-            <button
-              onClick={() => {
-                setTheme(theme === "dark" ? "light" : "dark");
-              }}
-              className="text-white hover:text-gray-300 transition-colors pb-1"
-            >
-              <Sun size={24} />
-            </button>
-          </div>
-        </div>
-
-        <hr className="text-white" />
-
-        {/* Navigation Items */}
-        <nav className="flex flex-col gap-2 mt-5">
-          {/* Resources */}
-          <button className="flex items-center gap-3 text-white font-medium py-2 px-2">
-            <img src={homeIcon2} alt="Collection Icon" />
-            <Link to="/" className="text-lg">
-              Resources
-            </Link>
-          </button>
-
-          {/* Collection */}
-          <div className="">
-            <div className="flex items-center">
+        >
+          {isOpen ? (
+            <Menu size={28} color="white" onClick={() => setIsOpen(!isOpen)} />
+          ) : (
+            ""
+          )}
+          <div className="flex justify-between items-end">
+            <h1 className="mt-10 font-bold text-xl py-1 text-white">
+              StudyLog
+            </h1>
+            <div className="flex gap-2">
+              <SignOutButton />
               <button
-                onClick={() => setIsCollectionOpen(!isCollectionOpen)}
-                className="flex items-center justify-between w-full text-white py-2 px-2 rounded transition-colors"
+                onClick={() => {
+                  setTheme(theme === "dark" ? "light" : "dark");
+                }}
+                className="text-white hover:text-gray-300 transition-colors pb-1"
               >
-                <div className="flex items-center gap-3">
-                  <img src={collectionIcon} alt="Collection Icon" />
-                  <span className="text-lg">Collection</span>
-                </div>
-
-                <ChevronUp
-                  size={16}
-                  className={`transform transition-transform ${
-                    isCollectionOpen ? "" : "rotate-180"
-                  }`}
-                />
+                <Sun size={24} />
               </button>
-
-              <CategoryModal />
-            </div>
-            <div
-              className={`${
-                isCollectionOpen
-                  ? "flex flex-col gap-2 text-white py-1 rounded-md"
-                  : "hidden text-white"
-              }`}
-            >
-              {loading ? (
-                <p className="pl-10 py-1.5 rounded-md">
-                  <Loader2 />
-                </p>
-              ) : (
-                allCategory?.map((c) => (
-                  <div
-                    key={c.id}
-                    className={
-                      selectedCategory === c.id
-                        ? "bg-[#3F3F3F] dark:bg-[#81c3d7] rounded-md "
-                        : "cursor-pointer hover:bg-[#3F3F3F] dark:hover:bg-[#81c3d7] rounded-md"
-                    }
-                  >
-                    <p
-                      className="pl-10 py-1.5 rounded-md"
-                      onClick={() => {
-                        setSelectedCategory(c.id);
-                        fetchSelectedResource(c.id, c.category_name);
-                        setIsOpen(false); // close sidebar on mobile
-                      }}
-                    >
-                      {c.category_name}
-                    </p>
-                  </div>
-                ))
-              )}
             </div>
           </div>
-        </nav>
+
+          <hr className="text-white" />
+
+          <nav className="flex flex-col gap-2 mt-5">
+            <button className="flex items-center gap-3 text-white font-medium py-2 px-2">
+              <img src={homeIcon2} alt="Collection Icon" />
+              <Link to="/" className="text-lg">
+                Resources
+              </Link>
+            </button>
+
+            <div className="">
+              <div className="flex items-center">
+                <button
+                  onClick={() => setIsCollectionOpen(!isCollectionOpen)}
+                  className="flex items-center justify-between w-full text-white py-2 px-2 rounded transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <img src={collectionIcon} alt="Collection Icon" />
+                    <span className="text-lg">Collection</span>
+                  </div>
+
+                  <ChevronUp
+                    size={16}
+                    className={`transform transition-transform ${
+                      isCollectionOpen ? "" : "rotate-180"
+                    }`}
+                  />
+                </button>
+
+                <CategoryModal />
+              </div>
+              <div
+                className={`${
+                  isCollectionOpen
+                    ? "flex flex-col gap-2 text-white py-1 rounded-md"
+                    : "hidden text-white"
+                }`}
+              >
+                {loading ? (
+                  <p className="pl-10 py-1.5 rounded-md">
+                    <Loader2 />
+                  </p>
+                ) : (
+                  allCategory?.map((c) => (
+                    <div
+                      key={c.id}
+                      className={
+                        selectedCategory === c.id
+                          ? "bg-[#3F3F3F] dark:bg-[#81c3d7] rounded-md "
+                          : "cursor-pointer hover:bg-[#3F3F3F] dark:hover:bg-[#81c3d7] rounded-md"
+                      }
+                    >
+                      <p
+                        className="pl-10 py-1.5 rounded-md"
+                        onClick={() => {
+                          setSelectedCategory(c.id);
+                          fetchSelectedResource(c.id, c.category_name);
+                          setIsOpen(false); // close sidebar on mobile
+                        }}
+                      >
+                        {c.category_name}
+                      </p>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </nav>
+        </div>
       </div>
     </>
   );
