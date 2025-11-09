@@ -1,14 +1,12 @@
 import { supabase } from "@/supabaseClient";
-import Modal from "../components/modal/modal";
+import Modal from "../components/modal/create.modal";
 import { useEffect, useState } from "react";
 import type { category } from "@/components/sidenav";
 import { useNavigate } from "react-router-dom";
 import { user } from "@/hooks/getUser";
-import Sidebar from "@/components/sidenav";
 
 const BrainCrumbs = () => {
   const [topTwoCategory, setCategory] = useState<category[]>();
-  const name = localStorage.getItem("userName");
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -35,7 +33,7 @@ const BrainCrumbs = () => {
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col items-center justify-center px-8">
           <h1 className="text-5xl font-bold mb-4 dark:text-[#112A46]">
-            Hi {name}
+            Welcome back
           </h1>
           <p className="text-gray-400 text-xl mb-12">
             What did you study today?

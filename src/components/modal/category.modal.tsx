@@ -12,6 +12,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { supabase } from "@/supabaseClient";
 import { Plus } from "lucide-react";
+import { user } from "@/hooks/getUser";
 
 function CategoryModal() {
   const [category, setCategory] = useState<string>();
@@ -24,7 +25,7 @@ function CategoryModal() {
       } else {
         const { data, error } = await supabase
           .from("category")
-          .insert([{ category_name: category }])
+          .insert([{ category_name: category, user_id: user?.id }])
           .select();
         console.log(data, error);
         setCategory("");
@@ -38,7 +39,10 @@ function CategoryModal() {
     <>
       <Dialog>
         <DialogTrigger>
-          <Plus size={18} className="hover:bg-[#3F3F3F] rounded" />
+          <button className="px-4 py-1 my-3 bg-[#81c3d7] text-white rounded flex gap-2 items-center">
+            New Category
+            <Plus size={18} />
+          </button>
         </DialogTrigger>
         <DialogContent className="bg-black text-white dark:bg-white dark:text-black">
           <DialogHeader>

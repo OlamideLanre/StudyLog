@@ -125,7 +125,7 @@ function DisplayResources() {
       ) : filteredResources?.length === 0 ? (
         <div className="flex justify-center items-center h-full">
           <h1 className="font-semibold text-xl dark:text-black text-white">
-            No resources found
+            No saved sessions
           </h1>
         </div>
       ) : (

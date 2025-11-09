@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { ChevronUp, Sun, Menu, Loader2 } from "lucide-react";
-import collectionIcon from "../assets/collection.svg";
+import { Sun, Menu, Loader2 } from "lucide-react";
 import homeIcon2 from "../assets/homeIcon2.svg";
 import CategoryModal from "./modal/category.modal";
 import { supabase } from "@/supabaseClient";
@@ -9,6 +8,7 @@ import { useCategoryContext, useResourcesContext } from "@/globalContext";
 import { useTheme } from "@/ThemeToggle";
 import { user } from "@/hooks/getUser";
 import SignOutButton from "@/auth/signOut";
+import CreateModal from "./modal/create.modal";
 
 export interface category {
   id: number;
@@ -19,7 +19,6 @@ export interface category {
 const Sidebar = () => {
   const { theme, setTheme } = useTheme();
   const [loading, setLoading] = useState<Boolean>(false);
-  const [isCollectionOpen, setIsCollectionOpen] = useState(true);
   const [allCategory, setCategory] = useState<category[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const { selectedCategory, setSelectedCategory } = useCategoryContext();
@@ -70,33 +69,10 @@ const Sidebar = () => {
       console.log(error);
     }
   }
-
-  //   try {
-  //     const {
-  //       data: { user },
-  //     } = await supabase.auth.getUser();
-  //     console.log("active user: ", user);
-  //     let { data: resources, error } = await supabase
-  //       .from("resources")
-  //       .select("*")
-  //       .eq("user_id", user?.id);
-  //     if (!error) {
-  //       console.log("users saves: ", resources);
-  //     } else {
-  //       console.log(error);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-  // useEffect(() => {
-  //   testFetch();
-  // }, []);
   return (
     <>
       <div>
         <div className="lg:hidden pt-5 bg-[#282828] dark:bg-[#112A46] h-screen">
-          {/* <h1 className="text-white font-bold text-xl">StudyLog</h1> */}
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="text-white focus:outline-none"
@@ -119,9 +95,7 @@ const Sidebar = () => {
             ""
           )}
           <div className="flex justify-between items-end">
-            <h1 className="mt-10 font-bold text-xl py-1 text-white">
-              StudyLog
-            </h1>
+            <h1 className="mt-5 font-bold text-xl py-1 text-white">StudyLog</h1>
             <div className="flex gap-2">
               <SignOutButton />
               <button
@@ -135,60 +109,28 @@ const Sidebar = () => {
             </div>
           </div>
 
-          <hr className="text-white" />
-
           <nav className="flex flex-col gap-2 mt-5">
-            <button className="flex items-center gap-3 text-white font-medium py-2 px-2">
+            <button className="flex items-center gap-3 text-white py-2 px-2">
               <img src={homeIcon2} alt="Collection Icon" />
-              <Link to="/" className="text-lg">
+              <Link to="/" className="text-[17px]">
                 Resources
               </Link>
             </button>
+            <CreateModal />
 
             <div className="">
-              <div className="flex items-center">
-                <button
-                  onClick={() => setIsCollectionOpen(!isCollectionOpen)}
-                  className="flex items-center justify-between w-full text-white py-2 px-2 rounded transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <img src={collectionIcon} alt="Collection Icon" />
-                    <span className="text-lg">Collection</span>
-                  </div>
+              <h5 className="text-gray-500 font-semibold my-3">CATEGORIES</h5>
 
-                  <ChevronUp
-                    size={16}
-                    className={`transform transition-transform ${
-                      isCollectionOpen ? "" : "rotate-180"
-                    }`}
-                  />
-                </button>
-
-                <CategoryModal />
-              </div>
-              <div
-                className={`${
-                  isCollectionOpen
-                    ? "flex flex-col gap-2 text-white py-1 rounded-md"
-                    : "hidden text-white"
-                }`}
-              >
+              <div className=" text-white mb-1 ">
                 {loading ? (
-                  <p className="pl-10 py-1.5 rounded-md">
+                  <p className="pl-3 py-1.5 rounded-md">
                     <Loader2 />
                   </p>
                 ) : (
                   allCategory?.map((c) => (
-                    <div
-                      key={c.id}
-                      className={
-                        selectedCategory === c.id
-                          ? "bg-[#3F3F3F] dark:bg-[#81c3d7] rounded-md "
-                          : "cursor-pointer hover:bg-[#3F3F3F] dark:hover:bg-[#81c3d7] rounded-md"
-                      }
-                    >
+                    <div key={c.id} className="cursor-pointer rounded-md ">
                       <p
-                        className="pl-10 py-1.5 rounded-md"
+                        className="pl-3 py-1.5 rounded-md text-[17px]"
                         onClick={() => {
                           setSelectedCategory(c.id);
                           fetchSelectedResource(c.id, c.category_name);
@@ -200,6 +142,9 @@ const Sidebar = () => {
                     </div>
                   ))
                 )}
+              </div>
+              <div>
+                <CategoryModal />
               </div>
             </div>
           </nav>

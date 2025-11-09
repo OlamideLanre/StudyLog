@@ -10,14 +10,14 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 import { Textarea } from "../ui/textarea";
 import { useEffect, useState } from "react";
 import { supabase } from "@/supabaseClient";
 import type { category } from "../sidenav";
 
 // Test();
-const Modal = () => {
+const CreateModal = () => {
   const [title, setTitle] = useState<string>();
   const [link, setLink] = useState<string>();
   const [notes, setNotes] = useState<string>();
@@ -89,17 +89,10 @@ const Modal = () => {
       <Dialog>
         <form>
           <DialogTrigger asChild>
-            <div
-              className="border border-gray-700 rounded-xl p-8 min-w-[150] hover:bg-gray-900 dark:hover:bg-[#112A46] hover:text-white transition-colors cursor-pointer flex items-center justify-center"
-              title="use to add a new resource"
-            >
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <span className="text-xl font-semibold text-gray-400">
-                  New Entry
-                </span>
-                <Plus size={20} className="text-gray-400" />
-              </div>
-            </div>
+            <button className="flex items-center gap-3 text-white py-2 px-2 text-[17px]">
+              <PlusCircle />
+              Log session
+            </button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px] bg-black text-white dark:bg-white dark:text-black">
             <DialogHeader>
@@ -219,4 +212,4 @@ const Modal = () => {
   );
 };
 
-export default Modal;
+export default CreateModal;
