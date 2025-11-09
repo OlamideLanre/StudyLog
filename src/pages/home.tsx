@@ -30,9 +30,6 @@ const BrainCrumbs = () => {
 
   return (
     <div className="flex h-screen bg-black text-white dark:bg-white dark:text-black">
-      <div className="text-white">
-        <Sidebar />
-      </div>
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Main Content Area */}
