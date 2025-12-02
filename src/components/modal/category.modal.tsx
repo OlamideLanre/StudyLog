@@ -11,10 +11,9 @@ import { Input } from "../ui/input";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { supabase } from "@/supabaseClient";
-import { Plus } from "lucide-react";
 import { user } from "@/hooks/getUser";
 
-function CategoryModal() {
+function CategoryModal({ savedCategory }) {
   const [category, setCategory] = useState<string>();
   const [error, setError] = useState<string>();
 
@@ -39,10 +38,13 @@ function CategoryModal() {
     <>
       <Dialog>
         <DialogTrigger>
-          <button className="px-4 py-1 my-3 bg-[#81c3d7] text-white rounded flex gap-2 items-center">
-            New Category
-            <Plus size={18} />
-          </button>
+          <div className="mt-3 flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#00A896] text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-opacity-90">
+            <span className="truncate">
+              {savedCategory?.length === 0
+                ? "+ Create category"
+                : "+ Add New Category"}
+            </span>
+          </div>
         </DialogTrigger>
         <DialogContent className="bg-black text-white dark:bg-white dark:text-black">
           <DialogHeader>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Sun, Menu, Loader2 } from "lucide-react";
+import { Sun, Menu, Loader2, UserCircle2Icon } from "lucide-react";
 import homeIcon2 from "../assets/homeIcon2.svg";
 import CategoryModal from "./modal/category.modal";
 import { supabase } from "@/supabaseClient";
@@ -97,7 +97,7 @@ const Sidebar = () => {
           <div className="flex justify-between items-end">
             <h1 className="mt-5 font-bold text-xl py-1 text-white">StudyLog</h1>
             <div className="flex gap-2">
-              <SignOutButton />
+              {/* <SignOutButton /> */}
               <button
                 onClick={() => {
                   setTheme(theme === "dark" ? "light" : "dark");
@@ -110,7 +110,7 @@ const Sidebar = () => {
           </div>
 
           <nav className="flex flex-col gap-2 mt-5">
-            <button className="flex items-center gap-3 text-white py-2 px-2">
+            <button className="flex items-center gap-3 text-white py-2">
               <img src={homeIcon2} alt="Collection Icon" />
               <Link to="/" className="text-[17px]">
                 Resources
@@ -119,32 +119,45 @@ const Sidebar = () => {
             <CreateModal />
 
             <div className="">
-              <h5 className="text-gray-500 font-semibold my-3">CATEGORIES</h5>
+              <h5 className="text-gray-400 text-sm font-semibold my-3">
+                CATEGORIES
+              </h5>
 
               <div className=" text-white mb-1 ">
-                {loading ? (
+                {loading && allCategory.length > 0 ? (
                   <p className="pl-3 py-1.5 rounded-md">
                     <Loader2 />
                   </p>
                 ) : (
                   allCategory?.map((c) => (
-                    <div key={c.id} className="cursor-pointer rounded-md ">
-                      <p
-                        className="pl-3 py-1.5 rounded-md text-[17px]"
+                    <div className="mb-2 ml-1 " key={c.id}>
+                      <label
+                        className="flex items-center gap-3 text-gray-300 cursor-pointer"
                         onClick={() => {
                           setSelectedCategory(c.id);
                           fetchSelectedResource(c.id, c.category_name);
                           setIsOpen(false); // close sidebar on mobile
                         }}
                       >
-                        {c.category_name}
-                      </p>
+                        <input
+                          type="checkbox"
+                          className="h-3 w-3 border border-gray-300 bg-transparent"
+                        />
+                        <span>{c.category_name}</span>
+                      </label>
                     </div>
                   ))
                 )}
               </div>
               <div>
-                <CategoryModal />
+                <CategoryModal savedCategory={allCategory} />
+              </div>
+            </div>
+            <div className="flex items-end mt-10 gap-3 h-80">
+              <UserCircle2Icon />
+              <div>
+                <span className=" text-white">{user?.email}</span>
+                <SignOutButton />
               </div>
             </div>
           </nav>

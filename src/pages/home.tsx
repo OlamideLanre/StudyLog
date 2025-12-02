@@ -36,7 +36,9 @@ const BrainCrumbs = () => {
             Welcome back
           </h1>
           <p className="text-gray-400 text-xl mb-12">
-            What did you study today?
+            {topTwoCategory?.length == 0
+              ? "no saved resources"
+              : "Here's your recent logged categories"}
           </p>
 
           {/* Collection Cards */}
@@ -45,7 +47,7 @@ const BrainCrumbs = () => {
             {topTwoCategory?.map((c) => (
               <div
                 key={c.id}
-                className="border border-gray-400 rounded-xl p-8 min-w-[150] hover:bg-gray-900 dark:hover:bg-[#112A46] hover:text-white text-[#112A46] transition-colors cursor-pointer"
+                className="border border-gray-400 rounded-xl p-8 min-w-[150] hover:text-white text-white dark:text-[#112A46] transition-colors cursor-pointer"
                 onClick={() =>
                   navigate(`/resources/${c.id}/${c.category_name}`)
                 }
@@ -57,7 +59,7 @@ const BrainCrumbs = () => {
               </div>
             ))}
 
-            <Modal />
+            {/* <Modal /> */}
           </div>
         </div>
       </div>

@@ -15,6 +15,7 @@ import { Textarea } from "../ui/textarea";
 import { useEffect, useState } from "react";
 import { supabase } from "@/supabaseClient";
 import type { category } from "../sidenav";
+import { user } from "@/hooks/getUser";
 
 // Test();
 const CreateModal = () => {
@@ -55,7 +56,7 @@ const CreateModal = () => {
     setErrors({});
     const { data, error } = await supabase
       .from("resources")
-      .insert([{ title, link, notes, category_id: choice }])
+      .insert([{ title, link, notes, category_id: choice, user_id: user?.id }])
       .select();
 
     console.log(data, error);
@@ -71,7 +72,8 @@ const CreateModal = () => {
     const fetchCategory = async () => {
       let { data: category, error } = await supabase
         .from("category")
-        .select("*");
+        .select("*")
+        .eq("user_id", user?.id);
 
       if (error) {
         console.error("Error fetching categories:", error.message);
@@ -89,7 +91,7 @@ const CreateModal = () => {
       <Dialog>
         <form>
           <DialogTrigger asChild>
-            <button className="flex items-center gap-3 text-white py-2 px-2 text-[17px]">
+            <button className="flex items-center gap-3 text-white py-2 text-[17px]">
               <PlusCircle />
               Log session
             </button>
