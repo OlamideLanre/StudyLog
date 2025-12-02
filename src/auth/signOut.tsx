@@ -1,5 +1,4 @@
 import { supabase } from "@/supabaseClient";
-import { LogOutIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const SignOutButton = () => {
@@ -17,8 +16,8 @@ const SignOutButton = () => {
   }
   return (
     <div>
-      <button className="" onClick={signOut}>
-        <LogOutIcon size={20} />
+      <button className="text-gray-400 text-sm underline" onClick={signOut}>
+        Logout
       </button>
     </div>
   );

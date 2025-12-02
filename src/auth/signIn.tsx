@@ -41,38 +41,58 @@ const SignIn = () => {
   }
   return (
     <>
-      <div className="flex items-center justify-center">
-        <div className="grid w-full max-w-sm items-center gap-3 text-blue-950 ml-5">
-          <Label htmlFor="email">Email</Label>
+      <div className="flex items-center justify-center h-screen bg-blue-950">
+        <div className="grid w-full bg-white p-8 rounded-md max-w-sm items-center gap-2 text-blue-950 ml-5">
+          <div className="mb-3">
+            <h1 className="font-bold text-center text-2xl">Study Log</h1>
+            <p className="text-center text-sm text-slate-500 mt-1">
+              welcome back! Please enter your details
+            </p>
+          </div>
+
+          <Label htmlFor="email" className="font-semibold text-black">
+            Email Address
+          </Label>
           <Input
             className="border border-black/20"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
             type="email"
             id="email"
-            placeholder="Email"
+            placeholder="Enter your email"
           />
-          <Label htmlFor="password">Password</Label>
+          <div className="flex justify-between">
+            <Label htmlFor="password" className="font-semibold text-black ">
+              Password
+            </Label>
+            <Link
+              to="/password_rest"
+              className="text-slate-500 underline text-sm "
+            >
+              Forgot password?
+            </Link>
+          </div>
+
           <Input
             className="border border-black/20"
             onChange={(e) => setpassword(e.target.value)}
             value={password}
             type="password"
             id="password"
-            placeholder="Password"
+            placeholder="Enter your password"
           />
           <button
             type="submit"
-            className="bg-blue-950 text-white py-2 rounded-md"
+            className="bg-blue-950 text-white font-semibold py-2 rounded-md"
             onClick={signInWithEmail}
           >
-            {isLoading ? <Loader2Icon /> : "Login"}
+            {isLoading ? <Loader2Icon /> : "Sign In"}
           </button>
-          <p className="text-sm text-center text-black">
+          <p className="text-sm text-center text-black mt-5">
             Dont have an account?
             <Link
               to="/auth/signup"
-              className="text-blue-950 hover:underline hover:font-semibold"
+              className="text-blue-950 font-semibold ml-2 underline"
             >
               SignUp
             </Link>
