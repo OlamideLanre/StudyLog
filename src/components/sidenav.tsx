@@ -91,86 +91,93 @@ const Sidebar = () => {
 
         <div
           className={`
-    fixed top-0 left-0 h-screen w-60 bg-[#282828] p-4 flex flex-col dark:bg-[#112A46] 
-    transform transition-transform duration-300 
-    ${isOpen ? "translate-x-0" : "-translate-x-full"} 
-    lg:translate-x-0 lg:static
-  `}
+      fixed top-0 left-0 h-screen w-60 bg-[#282828] p-4 flex flex-col dark:bg-[#112A46]
+      transform transition-transform duration-300
+      ${isOpen ? "translate-x-0" : "-translate-x-full"} 
+      lg:translate-x-0 lg:static
+    `}
         >
           {isOpen ? (
             <Menu size={28} color="white" onClick={() => setIsOpen(!isOpen)} />
           ) : (
             ""
           )}
-          <div className="flex justify-between items-end">
-            <h1 className="mt-5 font-bold text-xl py-1 text-white">StudyLog</h1>
-            <div className="flex gap-2">
-              {/* <SignOutButton /> */}
-              <button
-                onClick={() => {
-                  setTheme(theme === "dark" ? "light" : "dark");
-                }}
-                className="text-white hover:text-gray-300 transition-colors pb-1"
-              >
-                <Sun size={24} />
-              </button>
-            </div>
-          </div>
 
-          <nav className="flex flex-col gap-2 mt-5">
-            <button className="flex items-center gap-3 text-white py-2">
-              <img src={homeIcon2} alt="Collection Icon" />
-              <Link to="/" className="text-[17px]">
-                Resources
-              </Link>
-            </button>
-            <CreateModal />
-
-            <div className="">
-              <h5 className="text-gray-400 text-sm font-semibold my-3">
-                CATEGORIES
-              </h5>
-
-              <div className=" text-white mb-1 ">
-                {loading && allCategory.length > 0 ? (
-                  <p className="pl-3 py-1.5 rounded-md">
-                    <Loader2 />
-                  </p>
-                ) : (
-                  allCategory?.map((c) => (
-                    <div className="mb-2 ml-1 " key={c.id}>
-                      <label
-                        className="flex items-center gap-3 text-gray-300 cursor-pointer"
-                        onClick={() => {
-                          setSelectedCategory(c.id);
-                          fetchSelectedResource(c.id, c.category_name);
-                          setIsOpen(false); // close sidebar on mobile
-                        }}
-                      >
-                        <input
-                          type="checkbox"
-                          className="h-3 w-3 border border-gray-300 bg-transparent"
-                          checked={checked === c.id}
-                          onChange={() => handleChange(c.id)}
-                        />
-                        <span>{c.category_name}</span>
-                      </label>
-                    </div>
-                  ))
-                )}
+          {/* TOP SECTION — scrollable */}
+          <div className="flex-1 overflow-y-auto">
+            <div className="flex justify-between items-end">
+              <h1 className="mt-5 font-bold text-xl py-1 text-white">
+                StudyLog
+              </h1>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    setTheme(theme === "dark" ? "light" : "dark");
+                  }}
+                  className="text-white hover:text-gray-300 transition-colors pb-1"
+                >
+                  <Sun size={24} />
+                </button>
               </div>
+            </div>
+
+            <nav className="flex flex-col gap-2 mt-5">
+              <button className="flex items-center gap-3 text-white py-2">
+                <img src={homeIcon2} alt="Collection Icon" />
+                <Link to="/" className="text-[17px]">
+                  Resources
+                </Link>
+              </button>
+
+              <CreateModal />
+
               <div>
+                <h5 className="text-gray-400 text-sm font-semibold my-3">
+                  CATEGORIES
+                </h5>
+
+                <div className="text-white mb-1">
+                  {loading && allCategory.length > 0 ? (
+                    <p className="pl-3 py-1.5 rounded-md">
+                      <Loader2 />
+                    </p>
+                  ) : (
+                    allCategory?.map((c) => (
+                      <div className="mb-2 ml-1" key={c.id}>
+                        <label
+                          className="flex items-center gap-3 text-gray-300 cursor-pointer"
+                          onClick={() => {
+                            setSelectedCategory(c.id);
+                            fetchSelectedResource(c.id, c.category_name);
+                            setIsOpen(false);
+                          }}
+                        >
+                          <input
+                            type="checkbox"
+                            className="h-3 w-3 border border-gray-300 bg-transparent"
+                            checked={checked === c.id}
+                            onChange={() => handleChange(c.id)}
+                          />
+                          <span>{c.category_name}</span>
+                        </label>
+                      </div>
+                    ))
+                  )}
+                </div>
+
                 <CategoryModal savedCategory={allCategory} />
               </div>
+            </nav>
+          </div>
+
+          {/* BOTTOM SECTION — FIXED */}
+          <div className="flex items-center gap-3 mt-auto">
+            <UserCircle2Icon />
+            <div>
+              <span className="text-white">{user?.email}</span>
+              <SignOutButton />
             </div>
-            <div className="flex items-end mt-10 gap-3 h-80">
-              <UserCircle2Icon />
-              <div>
-                <span className=" text-white">{user?.email}</span>
-                <SignOutButton />
-              </div>
-            </div>
-          </nav>
+          </div>
         </div>
       </div>
     </>

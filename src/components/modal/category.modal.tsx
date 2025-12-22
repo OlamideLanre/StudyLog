@@ -12,8 +12,11 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { supabase } from "@/supabaseClient";
 import { useUser } from "@/hooks/useUser";
-
-function CategoryModal({ savedCategory }) {
+import type { category } from "@/lib/utils";
+type savedCategory = {
+  savedCategory: category[];
+};
+function CategoryModal({ savedCategory }: savedCategory) {
   const { user } = useUser();
   const [category, setCategory] = useState<string>();
   const [error, setError] = useState<string>();
