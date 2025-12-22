@@ -1,9 +1,9 @@
-# 📚 Personal Knowledge Tracker(WIP)
+# Personal Knowledge Tracker(WIP)
 
 A simple web app that helps you save and organize learning resources (articles, videos, tweets, links, notes).  
 ---
 
-## 🚀 Features
+## Features
 - Add new resources with:
   - Title
   - Link
@@ -17,7 +17,7 @@ A simple web app that helps you save and organize learning resources (articles, 
 ---
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **React** (Frontend framework)
 - **Tailwind CSS** (Styling)
