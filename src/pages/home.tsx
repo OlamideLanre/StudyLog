@@ -1,9 +1,9 @@
 import { supabase } from "@/supabaseClient";
 import { useEffect, useState } from "react";
-import type { category } from "@/components/sidenav";
 import { useNavigate } from "react-router-dom";
 // import { user } from "@/hooks/getUser";
 import { useUser } from "@/hooks/useUser";
+import type { category } from "@/lib/utils";
 
 const BrainCrumbs = () => {
   const [topTwoCategory, setCategory] = useState<category[]>();

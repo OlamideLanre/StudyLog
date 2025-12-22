@@ -14,9 +14,10 @@ import { Edit } from "lucide-react";
 import { Textarea } from "../ui/textarea";
 import { useEffect, useState } from "react";
 import { supabase } from "@/supabaseClient";
-import type { category } from "../sidenav";
+
 import type { ResourceData } from "@/globalContext";
 import { useOnlineStatus } from "@/hooks/useOnlineStatus";
+import type { category } from "@/lib/utils";
 
 type editProps = { resourceID: number; onUpdated: () => void };
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Sun, Menu, Loader2, UserCircle2Icon } from "lucide-react";
 import homeIcon2 from "../assets/homeIcon2.svg";
 import CategoryModal from "./modal/category.modal";
@@ -21,7 +21,7 @@ const Sidebar = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [allCategory, setCategory] = useState<category[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const { selectedCategory, setSelectedCategory } = useCategoryContext();
+  const { setSelectedCategory } = useCategoryContext();
   const { setResources } = useResourcesContext();
   const navigate = useNavigate();
 
