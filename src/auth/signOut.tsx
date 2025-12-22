@@ -9,7 +9,7 @@ const SignOutButton = () => {
     const { error } = await supabase.auth.signOut();
     if (!error) {
       redirect("/auth/signin");
-      localStorage.removeItem("userName");
+      // localStorage.removeItem("userName");
     }
 
     console.log("an error occured: ", error);

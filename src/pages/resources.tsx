@@ -1,8 +1,8 @@
 import DeleteModal from "@/components/modal/delete.modal";
 import EditModal from "@/components/modal/edit.modal";
 import { useResourcesContext } from "@/globalContext";
-import { user } from "@/hooks/getUser";
 import { useOnlineStatus } from "@/hooks/useOnlineStatus";
+import { useUser } from "@/hooks/useUser";
 import { supabase } from "@/supabaseClient";
 import { Share } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -16,6 +16,7 @@ function DisplayResources() {
   const { selectedResource, setResources } = useResourcesContext();
   const [error, setError] = useState<string>("");
   const isOnline = useOnlineStatus();
+  const { user } = useUser();
 
   // local copy for search
   const [filteredResources, setFilteredResources] = useState(selectedResource);
@@ -79,6 +80,7 @@ function DisplayResources() {
   }
   // FETCHES RESOURCES WHEN USER REDIRECTS FROM LINK OR DIRECT URL
   useEffect(() => {
+    if (!user?.id) return;
     async function display() {
       let { data: resources, error } = await supabase
         .from("resources")
@@ -94,7 +96,7 @@ function DisplayResources() {
       }
     }
     display();
-  }, [id]);
+  }, [id, user]);
 
   //SHAREABLE LINK
   async function ShareResource(ID: number) {

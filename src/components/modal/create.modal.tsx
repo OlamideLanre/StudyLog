@@ -14,11 +14,13 @@ import { PlusCircle } from "lucide-react";
 import { Textarea } from "../ui/textarea";
 import { useEffect, useState } from "react";
 import { supabase } from "@/supabaseClient";
-import type { category } from "../sidenav";
-import { user } from "@/hooks/getUser";
+// import type { category } from "../sidenav";
+import { useUser } from "@/hooks/useUser";
+import type { category } from "@/lib/utils";
 
 // Test();
 const CreateModal = () => {
+  const { user } = useUser();
   const [title, setTitle] = useState<string>();
   const [link, setLink] = useState<string>();
   const [notes, setNotes] = useState<string>();
@@ -69,6 +71,7 @@ const CreateModal = () => {
   };
 
   useEffect(() => {
+    if (!user?.id) return;
     const fetchCategory = async () => {
       let { data: category, error } = await supabase
         .from("category")
@@ -84,7 +87,7 @@ const CreateModal = () => {
     };
 
     fetchCategory();
-  }, []);
+  }, [user]);
 
   return (
     <>
@@ -98,10 +101,9 @@ const CreateModal = () => {
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px] bg-black text-white dark:bg-white dark:text-black">
             <DialogHeader>
-              <DialogTitle>Add New Resource</DialogTitle>
+              <DialogTitle>Add new study session</DialogTitle>
               <DialogDescription className="text-gray-400">
-                Dumb what you learnt today here. Click save when you&apos;re
-                done.
+                Fill in the details below to log your study session
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4">
@@ -112,13 +114,13 @@ const CreateModal = () => {
                       Title is required
                     </p>
                   ) : (
-                    "Title"
+                    "Session title"
                   )}
                 </Label>
                 <Input
                   id="name-1"
                   name="name"
-                  placeholder="Array Reduce Function"
+                  placeholder="e.g Networking 101"
                   value={title}
                   onChange={(e) => {
                     setTitle(e.target.value);
@@ -137,7 +139,7 @@ const CreateModal = () => {
                   {errors.link ? (
                     <p className="text-red-500 text-[14px]">Link is required</p>
                   ) : (
-                    "Link"
+                    "Resource link"
                   )}
                 </Label>
                 <Input
@@ -204,7 +206,7 @@ const CreateModal = () => {
                 <Button variant="outline">Cancel</Button>
               </DialogClose> */}
               <Button type="submit" onClick={insertResource}>
-                Add Resource
+                Save session
               </Button>
             </DialogFooter>
           </DialogContent>

@@ -1,15 +1,17 @@
 import { supabase } from "@/supabaseClient";
-import Modal from "../components/modal/create.modal";
 import { useEffect, useState } from "react";
 import type { category } from "@/components/sidenav";
 import { useNavigate } from "react-router-dom";
-import { user } from "@/hooks/getUser";
+// import { user } from "@/hooks/getUser";
+import { useUser } from "@/hooks/useUser";
 
 const BrainCrumbs = () => {
   const [topTwoCategory, setCategory] = useState<category[]>();
+  const { user } = useUser();
 
   const navigate = useNavigate();
   useEffect(() => {
+    if (!user?.id) return;
     async function firstTwoCategories() {
       let { data: category, error } = await supabase
         .from("category")
@@ -17,14 +19,14 @@ const BrainCrumbs = () => {
         .eq("user_id", user?.id)
         .limit(2);
       if (error) {
-        console.log("an error occured");
+        console.log(error.message);
       } else {
         setCategory(category ?? []);
-        console.log(topTwoCategory);
+        // console.log(topTwoCategory);
       }
     }
     firstTwoCategories();
-  }, []);
+  }, [user]);
 
   return (
     <div className="flex h-screen bg-black text-white dark:bg-white dark:text-black">

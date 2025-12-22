@@ -27,7 +27,7 @@ const SignUp = () => {
     });
     if (!error) {
       redirect("/");
-      localStorage.setItem("userName", userDetails.first_name);
+      // localStorage.setItem("userName", userDetails.first_name);
     } else {
       switch (error.message) {
         case "Password should be at least 6 characters":

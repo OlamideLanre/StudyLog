@@ -11,9 +11,10 @@ import { Input } from "../ui/input";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { supabase } from "@/supabaseClient";
-import { user } from "@/hooks/getUser";
+import { useUser } from "@/hooks/useUser";
 
 function CategoryModal({ savedCategory }) {
+  const { user } = useUser();
   const [category, setCategory] = useState<string>();
   const [error, setError] = useState<string>();
 

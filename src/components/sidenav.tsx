@@ -6,47 +6,48 @@ import { supabase } from "@/supabaseClient";
 import { Link, useNavigate } from "react-router-dom";
 import { useCategoryContext, useResourcesContext } from "@/globalContext";
 import { useTheme } from "@/ThemeToggle";
-import { user } from "@/hooks/getUser";
 import SignOutButton from "@/auth/signOut";
 import CreateModal from "./modal/create.modal";
+import { useUser } from "@/hooks/useUser";
+import { getCatgory } from "@/hooks/getCategory";
+import type { category } from "@/lib/utils";
 
-export interface category {
-  id: number;
-  category_name: string;
-}
 // Sidebar Component
 
 const Sidebar = () => {
+  const { user } = useUser();
+
   const { theme, setTheme } = useTheme();
-  const [loading, setLoading] = useState<Boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [allCategory, setCategory] = useState<category[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const { selectedCategory, setSelectedCategory } = useCategoryContext();
   const { setResources } = useResourcesContext();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchCategory = async () => {
-      try {
-        setLoading(true);
-        let { data: category, error } = await supabase
-          .from("category")
-          .select("*")
-          .eq("user_id", user?.id);
-        if (!error) {
-          setCategory(category ?? []);
-          setLoading(false);
-        } else {
-          console.log(error);
-        }
-      } catch (error) {
-        setLoading(false);
-        console.log("An error occured while fetching category data");
-      }
-    };
-    fetchCategory();
-  }, []);
-
+  // useEffect(() => {
+  //   if (!user?.id) return;
+  //   const fetchCategory = async () => {
+  //     try {
+  //       setLoading(true);
+  //       let { data: category, error } = await supabase
+  //         .from("category")
+  //         .select("*")
+  //         .eq("user_id", user?.id);
+  //       if (!error) {
+  //         setCategory(category ?? []);
+  //         setLoading(false);
+  //       } else {
+  //         console.log(error.message);
+  //       }
+  //     } catch (error) {
+  //       setLoading(false);
+  //       console.log("An error occured while fetching category data");
+  //     }
+  //   };
+  //   fetchCategory();
+  // }, [user]);
+  getCatgory({ setCategory, setLoading }); //gets users category
   async function fetchSelectedResource(
     category_id: number,
     category_name: string
@@ -69,6 +70,13 @@ const Sidebar = () => {
       console.log(error);
     }
   }
+
+  // Handle checkbox change
+  const [checked, setChecked] = useState<number | undefined>();
+  const handleChange = (id: number) => {
+    // If the same checkbox is clicked again stay selected
+    setChecked((prev) => (prev === id ? id : id));
+  };
   return (
     <>
       <div>
@@ -142,6 +150,8 @@ const Sidebar = () => {
                         <input
                           type="checkbox"
                           className="h-3 w-3 border border-gray-300 bg-transparent"
+                          checked={checked === c.id}
+                          onChange={() => handleChange(c.id)}
                         />
                         <span>{c.category_name}</span>
                       </label>
