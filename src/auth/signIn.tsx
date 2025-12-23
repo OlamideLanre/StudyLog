@@ -1,13 +1,14 @@
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/supabaseClient";
 import { Label } from "@radix-ui/react-label";
-import { Loader2Icon } from "lucide-react";
+import { Eye, Loader2Icon } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
 const SignIn = () => {
   const redirect = useNavigate();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setpassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -41,8 +42,8 @@ const SignIn = () => {
   }
   return (
     <>
-      <div className="flex items-center justify-center h-screen bg-blue-950">
-        <div className="grid w-full bg-white p-8 rounded-md max-w-sm items-center gap-2 text-blue-950 ml-5">
+      <div className="flex items-center justify-center h-screen bg-blue-950 p-5">
+        <div className="grid w-full bg-white p-8 rounded-md max-w-sm items-center gap-2 text-blue-950">
           <div className="mb-3">
             <h1 className="font-bold text-center text-2xl">Study Log</h1>
             <p className="text-center text-sm text-slate-500 mt-1">
@@ -72,15 +73,27 @@ const SignIn = () => {
               Forgot password?
             </Link>
           </div>
+          <div className="relative">
+            <Input
+              className="border border-black/20"
+              onChange={(e) => setpassword(e.target.value)}
+              value={password}
+              type={showPassword ? "text" : "password"}
+              id="password"
+              placeholder="Enter your password"
+            />
+            <div
+              className="absolute inset-y-0 right-0 pr-3 text-gray-400
+                    flex items-center 
+                    "
+            >
+              <Eye
+                className="cursor-pointer"
+                onClick={() => setShowPassword((prev) => !prev)}
+              />
+            </div>
+          </div>
 
-          <Input
-            className="border border-black/20"
-            onChange={(e) => setpassword(e.target.value)}
-            value={password}
-            type="password"
-            id="password"
-            placeholder="Enter your password"
-          />
           <button
             type="submit"
             className="bg-blue-950 text-white font-semibold py-2 rounded-md"

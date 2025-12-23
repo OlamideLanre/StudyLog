@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
 const SignUp = () => {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const redirect = useNavigate();
   const [userDetails, setUserDetails] = useState<{
     first_name: string;
@@ -26,7 +27,9 @@ const SignUp = () => {
       password: userDetails?.password,
     });
     if (!error) {
+      toast.success("Confirmation email sent!");
       redirect("/");
+
       // localStorage.setItem("userName", userDetails.first_name);
     } else {
       switch (error.message) {
@@ -46,6 +49,7 @@ const SignUp = () => {
       }
     }
   }
+
   return (
     <>
       <div className="h-screen">
@@ -124,7 +128,7 @@ const SignUp = () => {
                   setUserDetails({ ...userDetails, password: e.target.value })
                 }
                 value={userDetails.password}
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 placeholder="Password"
               />
@@ -140,7 +144,10 @@ const SignUp = () => {
                     flex items-center 
                     "
               >
-                <Eye className="cursor-pointer" />
+                <Eye
+                  className="cursor-pointer"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                />
               </div>
             </div>
 
