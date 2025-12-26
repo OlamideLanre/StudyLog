@@ -174,7 +174,7 @@ const Sidebar = () => {
           <div className="flex items-center gap-3 mt-auto">
             <UserCircle2Icon />
             <div>
-              <span className="text-white">{user?.email}</span>
+              <span className="text-white text-sm">{user?.email}</span>
               <SignOutButton />
             </div>
           </div>

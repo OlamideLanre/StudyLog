@@ -1,20 +1,25 @@
 import { useResourcesContext } from "@/globalContext";
 import { supabase } from "@/supabaseClient";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 const SharedResource = () => {
   const { id } = useParams();
   const { selectedResource, setResources } = useResourcesContext();
+  const [loading, setLoading] = useState<boolean>(false);
   async function displaySharedResource(id: number) {
     try {
+      setLoading(true);
       let { data: resources, error } = await supabase
         .from("resources")
         .select("*")
         .eq("id", id);
-      !error
-        ? setResources(resources ?? [])
-        : console.log("an error occured while fetching shared resource");
+      if (error) {
+        console.log("an error occured while fetching shared resource");
+      } else {
+        setLoading(false);
+        setResources(resources ?? []);
+      }
     } catch (error) {
       throw new Error("Could not find shared resource");
     }
@@ -24,16 +29,20 @@ const SharedResource = () => {
   }, [id]);
 
   return (
-    <div className="bg-white">
-      {selectedResource?.length === 0 ? (
+    <div className="bg-white p-3">
+      {loading && selectedResource?.length > 0 ? (
         <p className="flex justify-center items-center text-xl h-screen text-[#112A46] font-semibold">
-          Sorry we can't find this shared resource
+          Fetching resource...
+        </p>
+      ) : selectedResource?.length === 0 ? (
+        <p className="flex justify-center items-center text-xl h-screen text-[#112A46] font-semibold">
+          Resource not found
         </p>
       ) : (
         selectedResource?.map((r) => (
           <div
             key={r.id}
-            className="bg-[#282828] text-white w-xl xl:w-[60%] p-4 mx-auto rounded-md dark:bg-[#eaf4f4] dark:text-black"
+            className="w-xl xl:w-[60%] p-4 mx-auto rounded-md bg-[#eaf4f4] text-black"
           >
             <div className="flex justify-between">
               <h1 className="font-semibold text-lg">{r.title}</h1>

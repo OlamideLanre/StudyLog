@@ -27,8 +27,10 @@ const SignUp = () => {
       password: userDetails?.password,
     });
     if (!error) {
-      toast.success("Confirmation email sent!");
-      redirect("/");
+      toast.success("Confirmation email sent! Please verify to continue.");
+      setTimeout(() => {
+        redirect("/auth/signin");
+      }, 3000);
 
       // localStorage.setItem("userName", userDetails.first_name);
     } else {
@@ -53,6 +55,7 @@ const SignUp = () => {
   return (
     <>
       <div className="h-screen">
+        <ToastContainer hideProgressBar={true} />
         <div className="bg-blue-950 h-[50vh] relative"></div>
         <div className="flex items-center justify-center shadow-md bg-white rounded-md w-90 md:w-100 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-5">
           <div className="grid w-full max-w-sm items-center gap-3 text-blue-950 p-5">
@@ -167,7 +170,6 @@ const SignUp = () => {
                 Sign In
               </Link>
             </p>
-            <ToastContainer hideProgressBar={true} />
           </div>
         </div>
       </div>

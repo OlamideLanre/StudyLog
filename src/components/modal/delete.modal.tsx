@@ -18,8 +18,6 @@ const DeleteModal: React.FC<MyComponentProps> = ({
   deleteResource,
   delError,
 }) => {
-  // console.log(isOnline);
-
   return (
     <Dialog>
       <DialogTrigger>

@@ -100,13 +100,13 @@ function DisplayResources() {
 
   //SHAREABLE LINK
   async function ShareResource(ID: number) {
-    const BaseURL = `https://study-log-tawny.vercel.app/share/${ID}`;
+    const BaseURL = `https://localhost:5173/share/${ID}`;
     try {
       await window.navigator.clipboard.writeText(BaseURL);
-      toast("Resource link to clipboard!");
+      toast.success("Resource link to clipboard!");
     } catch (err) {
       console.error("Unable to copy to clipboard.", err);
-      toast("Copy to link failed.");
+      toast.error("Copy to link failed.");
     }
   }
 

@@ -35,11 +35,11 @@ const BrainCrumbs = () => {
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col items-center justify-center px-8">
           <h1 className=" text-3xl md:text-5xl font-bold mb-4 dark:text-[#112A46]">
-            Welcome back
+            {topTwoCategory?.length == 0 ? "Welcome" : "Welcome back"}
           </h1>
-          <p className="text-gray-400 md:text-xl mb-12">
+          <p className="text-gray-400 text-center md:text-xl mb-12">
             {topTwoCategory?.length == 0
-              ? "no saved resources"
+              ? "No saved resources. Log a session to get started"
               : "Here's your recent logged categories"}
           </p>
 

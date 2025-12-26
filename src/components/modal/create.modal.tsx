@@ -21,10 +21,6 @@ import type { category } from "@/lib/utils";
 // Test();
 const CreateModal = () => {
   const { user } = useUser();
-  const [title, setTitle] = useState<string>();
-  const [link, setLink] = useState<string>();
-  const [notes, setNotes] = useState<string>();
-  const [choice, setChoice] = useState<string>();
   const [localCategory, setCategory] = useState<category[]>([]);
   const [errors, setErrors] = useState<{
     title?: string;
@@ -33,13 +29,18 @@ const CreateModal = () => {
     choice?: string;
   }>({});
 
-  // const [error, setError] = useState<string>();
-  // const [formData, setFormData] = useState({
-  //   title: title,
-  //   link: link,
-  //   notes: notes,
-  //   choice: choice,
-  // });
+  const [createData, setCreateData] = useState<{
+    title: string;
+    link: string;
+    notes: string;
+    choice: string;
+  }>({
+    title: "",
+    link: "",
+    notes: "",
+    choice: "",
+  });
+  const { title, link, notes, choice } = createData;
 
   const insertResource = async () => {
     const newErrors: typeof errors = {};
@@ -48,7 +49,7 @@ const CreateModal = () => {
     if (!link?.trim()) newErrors.link = "Link is required";
     if (!notes?.trim()) newErrors.notes = "Note is required";
     if (!choice?.trim()) newErrors.choice = "Category is required";
-
+    console.log("choice: ", choice);
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return; //stop if validation fails
@@ -60,14 +61,12 @@ const CreateModal = () => {
       .from("resources")
       .insert([{ title, link, notes, category_id: choice, user_id: user?.id }])
       .select();
+    console.log("choice: ", choice);
 
     console.log(data, error);
 
     // reset fields
-    setTitle("");
-    setLink("");
-    setNotes("");
-    setChoice("");
+    setCreateData({ title: "", link: "", notes: "", choice: "" });
   };
 
   useEffect(() => {
@@ -123,7 +122,7 @@ const CreateModal = () => {
                   placeholder="e.g Networking 101"
                   value={title}
                   onChange={(e) => {
-                    setTitle(e.target.value);
+                    setCreateData({ ...createData, title: e.target.value });
                     setErrors((prev) => ({ ...prev, title: undefined }));
                   }}
                   className={
@@ -148,7 +147,7 @@ const CreateModal = () => {
                   placeholder="www.yourlink.com"
                   value={link}
                   onChange={(e) => {
-                    setLink(e.target.value);
+                    setCreateData({ ...createData, link: e.target.value });
                     setErrors((prev) => ({ ...prev, link: undefined }));
                   }}
                   className={
@@ -162,7 +161,7 @@ const CreateModal = () => {
                   placeholder="short description of your resource"
                   value={notes}
                   onChange={(e) => {
-                    setNotes(e.target.value);
+                    setCreateData({ ...createData, notes: e.target.value });
                     setErrors((prev) => ({ ...prev, notes: undefined }));
                   }}
                   className={
@@ -183,7 +182,7 @@ const CreateModal = () => {
                   value={choice}
                   defaultValue="Select Category"
                   onChange={(e) => {
-                    setChoice(e.target.value);
+                    setCreateData({ ...createData, choice: e.target.value });
                     setErrors((prev) => ({ ...prev, choice: undefined }));
                   }}
                   className={`${
