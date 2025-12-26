@@ -34,15 +34,11 @@ const SharedResource = () => {
         <p className="flex justify-center items-center text-xl h-screen text-[#112A46] font-semibold">
           Fetching resource...
         </p>
-      ) : selectedResource?.length === 0 ? (
-        <p className="flex justify-center items-center text-xl h-screen text-[#112A46] font-semibold">
-          Resource not found
-        </p>
       ) : (
         selectedResource?.map((r) => (
           <div
             key={r.id}
-            className="w-xl xl:w-[60%] p-4 mx-auto rounded-md bg-[#eaf4f4] text-black"
+            className="w-full md:w-1/2 p-4 mx-auto rounded-md bg-[#eaf4f4] text-black"
           >
             <div className="flex justify-between">
               <h1 className="font-semibold text-lg">{r.title}</h1>

@@ -95,7 +95,7 @@ const CreateModal = () => {
           <DialogTrigger asChild>
             <button className="flex items-center gap-3 text-white py-2 text-[17px]">
               <PlusCircle />
-              Log session
+              Saved resource
             </button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px] bg-black text-white dark:bg-white dark:text-black">
